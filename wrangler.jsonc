@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "datum-studio",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-07-14",
+
+  "kv_namespaces": [
+    { "binding": "SUBMISSIONS", "id": "<YOUR_PROD_KV_NAMESPACE_ID>" }
+  ],
+
+  "vars": {
+    "TURNSTILE_SITE_KEY": "<YOUR_TURNSTILE_SITE_KEY>"
+  },
+
+  "env": {
+    "preview": {
+      "kv_namespaces": [
+        { "binding": "SUBMISSIONS", "id": "<YOUR_PREVIEW_KV_NAMESPACE_ID>" }
+      ],
+      "vars": {
+        "TURNSTILE_SITE_KEY": "<YOUR_PREVIEW_TURNSTILE_SITE_KEY>"
+      }
+    }
+  }
+}

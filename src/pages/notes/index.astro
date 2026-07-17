@@ -1,0 +1,45 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const allNotes = await getCollection("notes", ({ data }: { data: CollectionEntry<"notes">["data"] }) => !data.draft);
+
+const sortedNotes = allNotes.sort(
+  (a: CollectionEntry<"notes">, b: CollectionEntry<"notes">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="Notes — Datum Studio" description="Quick updates, sketches, failed prototypes, and questions from Datum Studio.">
+  <section class="notes-hero section-pad">
+    <div class="section-heading">
+      <p class="section-kicker">Notes</p>
+      <h2>Quick updates, sketches, and questions.</h2>
+    </div>
+  </section>
+
+  <section class="notes-list section-pad">
+    {sortedNotes.length === 0 ? (
+      <p class="notes-empty">No notes published yet. Check back soon.</p>
+    ) : (
+      <ul class="note-cards">
+        {sortedNotes.map((note: CollectionEntry<"notes">) => (
+          <li>
+            <a href={`/notes/${note.id}/`} class="note-card">
+              <div class="note-card-meta">
+                <time>{note.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+                {note.data.tags.length > 0 && (
+                  <span class="article-tags">
+                    {note.data.tags.map((tag: string) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </span>
+                )}
+              </div>
+              <h2>{note.data.title}</h2>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>

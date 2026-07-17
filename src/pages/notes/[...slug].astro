@@ -1,0 +1,101 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes", ({ data }: { data: CollectionEntry<"notes">["data"] }) => !data.draft);
+
+  return notes.map((note: CollectionEntry<"notes">) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note }: { note: CollectionEntry<"notes"> } = Astro.props;
+const { Content } = await render(note);
+
+const heading = note.data.title.replace(/ — Datum Studio$/, "");
+
+const noteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: heading,
+  datePublished: note.data.pubDate.toISOString(),
+  author: {
+    "@type": "Organization",
+    name: "Datum Studio",
+    url: "https://datumstudio.ca",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Datum Studio",
+    url: "https://datumstudio.ca",
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `https://datumstudio.ca/notes/${note.id}/`,
+  },
+  keywords: note.data.tags.join(", "),
+  inLanguage: "en",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://datumstudio.ca",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Notes",
+      item: "https://datumstudio.ca/notes/",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: heading,
+      item: `https://datumstudio.ca/notes/${note.id}/`,
+    },
+  ],
+};
+---
+
+<Layout
+  title={`${note.data.title} — Datum Studio`}
+  description={note.data.title}
+  canonical={`/notes/${note.id}/`}
+  ogType="article"
+  articlePublished={note.data.pubDate.toISOString()}
+  articleTags={note.data.tags}
+  jsonLd={[noteJsonLd, breadcrumbJsonLd]}
+>
+  <article class="note-detail">
+    <header class="note-header section-pad">
+      <a class="note-back" href="/notes/">&larr; All notes</a>
+      <div class="note-header-meta">
+        <time>{note.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+        {note.data.tags.length > 0 && (
+          <span class="article-tags">
+            {note.data.tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </span>
+        )}
+      </div>
+      <h1>{heading}</h1>
+    </header>
+
+    <div class="note-body section-pad">
+      <Content />
+    </div>
+
+    <footer class="note-footer section-pad">
+      <a class="note-back" href="/notes/">&larr; All notes</a>
+    </footer>
+  </article>
+</Layout>

@@ -1,0 +1,49 @@
+# Datum Studio
+
+> Datum is a design studio working across architecture, craftsmanship, technology, and systems thinking. We create thoughtful spaces, objects, and systems around the way people actually live.
+
+Datum finds the reference point — the datum — from which every design decision is measured. When the reference point is right, every component fits. Every detail supports the whole.
+
+## Location
+
+Golden Horseshoe, GTA, Muskoka, and remote projects.
+
+## Services
+
+- Work Better — Home offices, studios, and workshops designed around focus, flow, and the tools you actually use.
+- Live Better — Storage, kitchens, mudrooms, and living spaces that remove friction from everyday routines.
+- Build Better — Custom millwork, built-ins, and furniture made with honest materials and a long working life.
+- Think Better — Planning, automation, workflow, and systems consulting that makes the whole project clearer.
+
+## Process
+
+1. Understand — We begin with people: how you live, where friction appears, and what a better day should feel like.
+2. Establish — We find the reference point — the priorities and constraints against which every decision is measured.
+3. Integrate — Space, objects, materials, and technology are developed as one system rather than separate products.
+4. Refine — We build, test, document, and simplify until the result feels natural, durable, and easy to maintain.
+
+## Articles
+
+Thoughts on design, craft, and building better spaces.
+
+- /articles/what-is-a-datum/ — The name is the method. A reference point that makes every design decision clearer.
+- /articles/creating-the-first-shop/ — Every project begins with a reference point. The story of the first Datum project.
+- /articles/still-worth-keeping/ — A chest built by a ten-year-old in grade 8. Not fine furniture — a family heirloom that deserves another generation.
+- /articles/technology-should-enhance-not-complicate/ — When technology serves the person, it disappears into the experience.
+- /articles/everything-has-a-home/ — Clutter is not a failure of discipline. It is a failure of design.
+- /articles/the-intelligent-bathroom/ — A room everyone uses multiple times a day, designed as if it barely matters.
+
+## Projects
+
+Real projects that prove the philosophy.
+
+- /projects/workshop/ — A garage workshop redesigned from the ground up. The first Datum project.
+
+## Contact
+
+Start a conversation: /#contact
+Email: hello@livingsystems.studio
+
+## API
+
+This is a static site. All content is available as HTML. An RSS feed is available at /rss.xml.

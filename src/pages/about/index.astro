@@ -1,0 +1,170 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="About — Datum Studio"
+  description="Datum brings together architecture, craftsmanship, technology, and systems thinking to create spaces that work beautifully. Learn about the philosophy."
+  canonical="/about/"
+  jsonLd={[
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      name: "About Datum Studio",
+      url: "https://datumstudio.ca/about/",
+      description: "The philosophy behind Datum Studio: designing thoughtful environments that improve everyday life.",
+      mainEntity: {
+        "@type": "Organization",
+        name: "Datum Studio",
+        url: "https://datumstudio.ca",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://datumstudio.ca" },
+        { "@type": "ListItem", position: 2, name: "About", item: "https://datumstudio.ca/about/" },
+      ],
+    },
+  ]}
+>
+  <section class="about-hero">
+    <div class="section-heading">
+      <p class="section-kicker">About Datum</p>
+      <h2>The invisible line that makes everything fit.</h2>
+    </div>
+  </section>
+
+  <section class="about-story section-pad">
+    <div class="about-story-grid">
+      <div class="about-story-heading">
+        <p class="section-kicker">The reference point</p>
+      </div>
+      <div class="about-story-copy">
+        <p>In architecture, engineering, and surveying, a datum is the line, plane, or point from which everything else is measured.</p>
+        <p>When the datum is right, every decision becomes clearer. Every component fits. Every detail supports the whole.</p>
+        <p>Most people never notice the datum. They notice the finished building, the beautiful furniture, the calm home, or the software that simply works.</p>
+        <p>We begin the same way: by understanding how people want to live. Only then do we bring together architecture, craftsmanship, technology, and systems thinking into something intentional, adaptable, and quietly beautiful.</p>
+        <p class="about-story-close">Because the best design is often not the thing you notice. It is the thing that makes life feel effortless.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-manifesto section-pad">
+    <p class="section-kicker">Our reference point</p>
+    <p class="manifesto-copy">Understand the person.<br /><em>Then design the whole.</em></p>
+  </section>
+
+  <section class="about-why section-pad">
+    <div class="about-why-grid">
+      <div class="about-why-heading">
+        <p class="section-kicker">Why this exists</p>
+        <h2>The world does not need more technology.</h2>
+      </div>
+      <div class="about-why-copy">
+        <p>It does not need more products. It does not need more complexity.</p>
+        <p>It needs environments that help people live better.</p>
+        <p>A well-designed home should reduce stress. A workshop should encourage creativity. A desk should disappear into the work. Software should remove friction instead of creating it. Automation should quietly support people rather than constantly demanding their attention.</p>
+        <p>Every object, every space, and every system should contribute to a life that feels calmer, more intentional, and more enjoyable.</p>
+        <p class="about-story-close">That is the purpose of Datum.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-principles section-pad">
+    <div class="about-principles-heading">
+      <p class="section-kicker">Our principles</p>
+      <h2>Not goals. Constraints.</h2>
+      <p>Goals may change. Technologies will change. Industries will change. These principles should not.</p>
+    </div>
+    <ol class="about-principles-list">
+      <li>
+        <span class="about-principle-number">I</span>
+        <div>
+          <h3>People First</h3>
+          <p>Every project begins with people. Technology, architecture, automation, furniture, and software exist to improve human life — not the other way around.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">II</span>
+        <div>
+          <h3>Build for Decades</h3>
+          <p>Prefer permanence over novelty. Design structures that age gracefully. Assume technology will change. Create systems that can evolve without requiring everything else to be replaced.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">III</span>
+        <div>
+          <h3>Integration Matters</h3>
+          <p>The whole is more valuable than its individual parts. Always ask: how does this improve the entire system? Avoid isolated optimization. Design complete experiences.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">IV</span>
+        <div>
+          <h3>Craftsmanship Is Respect</h3>
+          <p>Quality is respect for the client, the material, future maintenance, and yourself. Never knowingly produce work that you would be embarrassed to revisit years later.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">V</span>
+        <div>
+          <h3>Simplicity Wins</h3>
+          <p>Complexity must justify itself. Every additional feature introduces maintenance, failure points, and cognitive load. Simple systems that solve the real problem are preferred over complicated systems that solve imagined ones.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">VI</span>
+        <div>
+          <h3>Technology Should Disappear</h3>
+          <p>Technology is successful when people stop thinking about it. Interfaces should become invisible. Automation should feel natural. The best technology quietly supports everyday life.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">VII</span>
+        <div>
+          <h3>Beauty Serves Function</h3>
+          <p>Beauty is not decoration. Beauty creates comfort. Beauty encourages care. Beauty helps people feel at home. Never separate aesthetics from purpose.</p>
+        </div>
+      </li>
+      <li>
+        <span class="about-principle-number">VIII</span>
+        <div>
+          <h3>Curiosity Is a Responsibility</h3>
+          <p>Continue learning. Remain teachable. Study disciplines outside your own. Innovation often comes from connecting fields that rarely meet.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="about-success section-pad">
+    <div class="about-success-grid">
+      <div class="about-success-heading">
+        <p class="section-kicker">How we measure success</p>
+        <h2>Not only by income.</h2>
+      </div>
+      <div class="about-success-copy">
+        <ul>
+          <li>Clients feel happier in the spaces they inhabit.</li>
+          <li>The work remains useful years later.</li>
+          <li>Quality was never sacrificed for speed.</li>
+          <li>The process remained enjoyable.</li>
+          <li>Curiosity continued to grow.</li>
+          <li>Relationships became stronger.</li>
+          <li>Everyone involved was treated with respect.</li>
+          <li>The work leaves the world slightly better than it was found.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-footer section-pad">
+    <div class="about-footer-inner">
+      <p class="section-kicker">Start a conversation</p>
+      <h2>What would make life work better?</h2>
+      <p>Tell us about the space, routine, object, or stubborn problem. Early ideas are welcome; you do not need a finished brief.</p>
+      <a class="button button-primary" href="/#contact">Start a conversation <span>↗</span></a>
+    </div>
+  </section>
+</Layout>

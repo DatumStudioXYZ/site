@@ -1,0 +1,52 @@
+/* ==========================================================================
+   Design Tokens — Datum Studio
+   ========================================================================== */
+
+:root {
+  /* ---- Typography ---- */
+  --font-plex: "IBM Plex Sans Variable";
+
+  /* ---- Surfaces ---- */
+  --paper: #eeeae1;
+  --paper-light: #f8f6f0;
+
+  /* ---- Text ---- */
+  --ink: #20221f;
+  --muted: #66675f;
+
+  /* ---- Accent ---- */
+  --moss: #3f4a3d;
+  --moss-dark: #252c25;
+  --walnut: #a54d32;
+
+  /* ---- Borders & UI ---- */
+  --line: #c9c3b7;
+  --selection: #d8b6a7;
+
+  /* ---- Shadows ---- */
+  --shadow-photo: 0 2px 12px rgba(32, 34, 31, 0.08);
+  --shadow-photo-hover: 0 4px 20px rgba(32, 34, 31, 0.12);
+
+  /* ---- Dark mode surfaces ---- */
+  --paper-dark: #1a1a18;
+  --paper-dark-raised: #232320;
+  --ink-dark: #e8e4db;
+  --muted-dark: #a8a49b;
+  --line-dark: #3a3a35;
+  --selection-dark: #4a3d35;
+  --shadow-photo-dark: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --shadow-photo-hover-dark: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: var(--paper-dark);
+    --paper-light: var(--paper-dark-raised);
+    --ink: var(--ink-dark);
+    --muted: var(--muted-dark);
+    --line: var(--line-dark);
+    --selection: var(--selection-dark);
+    --shadow-photo: var(--shadow-photo-dark);
+    --shadow-photo-hover: var(--shadow-photo-hover-dark);
+  }
+}

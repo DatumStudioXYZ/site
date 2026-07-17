@@ -1,0 +1,169 @@
+---
+import "@fontsource-variable/ibm-plex-sans/wdth.css";
+import { ClientRouter } from "astro:transitions";
+import Wordmark from "../components/Wordmark.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+  jsonLd?: Record<string, any>[];
+  articlePublished?: string;
+  articleTags?: string[];
+}
+
+const {
+  title,
+  description = "Datum brings together architecture, craftsmanship, technology, and systems thinking to create spaces that work beautifully.",
+  canonical = Astro.url.href,
+  ogImage = "/images/workshop-wide.jpeg",
+  ogType = "website",
+  jsonLd = [],
+  articlePublished,
+  articleTags = [],
+} = Astro.props;
+
+const year = new Date().getFullYear();
+const siteName = "Datum Studio";
+const absoluteOgImage = new URL(ogImage, Astro.site).href;
+const absoluteCanonical = new URL(canonical, Astro.site).href;
+
+const defaultJsonLd: Record<string, any>[] = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteName,
+    url: Astro.site?.href,
+    logo: "/logo.jpg",
+    description: "Design studio working across architecture, craftsmanship, technology, and systems thinking. Golden Horseshoe, GTA, Muskoka, and remote.",
+    email: "hello@livingsystems.studio",
+    areaServed: {
+      "@type": "GeoCircle",
+      name: "Golden Horseshoe, GTA, Muskoka",
+    },
+    knowsAbout: [
+      "Architecture",
+      "Interior Design",
+      "Custom Millwork",
+      "Home Automation",
+      "Systems Thinking",
+      "Workshop Design",
+      "Organization Design",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteName,
+    url: Astro.site?.href,
+    description: "Everything begins with a reference point.",
+    publisher: {
+      "@type": "Organization",
+      name: siteName,
+    },
+  },
+];
+
+const allJsonLd = [...defaultJsonLd, ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preload" href="/fonts/ibm-plex-sans-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3f4a3d" />
+    <link rel="icon" type="image/jpeg" sizes="32x32" href="/favicon-32x32.jpg" />
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="/favicon-16x16.jpg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.jpg" />
+    <link rel="canonical" href={absoluteCanonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteName} — Articles`} href="/rss.xml" />
+    <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={absoluteCanonical} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_CA" />
+    {ogType === "article" && articlePublished && (
+      <meta property="article:published_time" content={articlePublished} />
+    )}
+    {ogType === "article" && articleTags.length > 0 && (
+      articleTags.map((tag) => (
+        <meta property="article:tag" content={tag} />
+      ))
+    )}
+    {ogType === "article" && (
+      <meta property="article:author" content={siteName} />
+    )}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <!-- View Transitions -->
+    <ClientRouter />
+
+    <!-- Structured Data -->
+    {allJsonLd.map((ld) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
+    ))}
+  </head>
+  <body>
+    <main>
+      <header class="site-header" transition:persist>
+        <a class="wordmark" href="/" aria-label="Datum Studio home"><Wordmark /></a>
+        <button class="menu-button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+        <nav id="primary-nav" class="nav" aria-label="Primary navigation">
+          <a href="/about/">About</a>
+          <a href="/services/">Services</a>
+          <a href="/projects/">Projects</a>
+          <a href="/articles/">Articles</a>
+          <a href="/process/">Process</a>
+          <a href="/#contact" class="nav-contact">Start a project</a>
+        </nav>
+      </header>
+
+      <slot />
+
+      <footer>
+        <a class="wordmark footer-mark" href="/"><Wordmark /></a>
+        <p>Everything begins with a reference point.</p>
+        <a href="/#contact">Start a conversation</a>
+        <p>&copy; {year} Datum Studio</p>
+      </footer>
+    </main>
+
+    <script>
+      const menuButton = document.querySelector(".menu-button");
+      const nav = document.querySelector("#primary-nav");
+
+      const closeMenu = () => {
+        nav?.classList.remove("open");
+        menuButton?.setAttribute("aria-expanded", "false");
+        if (menuButton) menuButton.textContent = "Menu";
+      };
+
+      menuButton?.addEventListener("click", () => {
+        const open = nav?.classList.toggle("open") ?? false;
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.textContent = open ? "Close" : "Menu";
+      });
+
+      nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+    </script>
+  </body>
+</html>

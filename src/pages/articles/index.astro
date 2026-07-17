@@ -1,0 +1,47 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const allArticles = await getCollection("articles", ({ data }: { data: CollectionEntry<"articles">["data"] }) => !data.draft);
+
+const sortedArticles = allArticles.sort(
+  (a: CollectionEntry<"articles">, b: CollectionEntry<"articles">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="Articles — Datum Studio" description="Thoughts on design, craft, and building better spaces. Articles from Datum Studio on architecture, craftsmanship, technology, and systems thinking.">
+  <section class="articles-hero section-pad">
+    <div class="section-heading">
+      <p class="section-kicker">Articles</p>
+      <h2>Thoughts on design, craft, and building better spaces.</h2>
+    </div>
+  </section>
+
+  <section class="articles-list section-pad">
+    {sortedArticles.length === 0 ? (
+      <p class="articles-empty">No articles published yet. Check back soon.</p>
+    ) : (
+      <ul class="article-cards">
+        {sortedArticles.map((article: CollectionEntry<"articles">) => (
+          <li>
+            <a href={`/articles/${article.id}/`} class="article-card">
+              <div class="article-card-meta">
+                <time>{article.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+                {article.data.tags.length > 0 && (
+                  <span class="article-tags">
+                    {article.data.tags.map((tag: string) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </span>
+                )}
+              </div>
+              <h2>{article.data.title}</h2>
+              <p>{article.data.description}</p>
+              <span class="article-read-more">Read article <span>&rarr;</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>

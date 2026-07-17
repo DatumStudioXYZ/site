@@ -1,0 +1,56 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const allProjects = await getCollection("projects", ({ data }: { data: CollectionEntry<"projects">["data"] }) => !data.draft);
+
+const sortedProjects = allProjects.sort(
+  (a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const statusLabel: Record<string, string> = {
+  "in-progress": "In progress",
+  completed: "Completed",
+  archived: "Archived",
+};
+---
+
+<Layout title="Projects — Datum Studio" description="Real projects that prove the philosophy. Workshops, rooms, and systems designed around the way people actually live.">
+  <section class="projects-hero section-pad">
+    <div class="section-heading">
+      <p class="section-kicker">Projects</p>
+      <h2>Real spaces. Real systems. Real results.</h2>
+    </div>
+  </section>
+
+  <section class="projects-list section-pad">
+    {sortedProjects.length === 0 ? (
+      <p class="projects-empty">No projects published yet. Check back soon.</p>
+    ) : (
+      <ul class="project-cards">
+        {sortedProjects.map((project: CollectionEntry<"projects">) => (
+          <li>
+            <a href={`/projects/${project.id}/`} class="project-card">
+              <div class="project-card-meta">
+                <span class={`project-status project-status--${project.data.status}`}>
+                  <i></i> {statusLabel[project.data.status]}
+                </span>
+                <time>{project.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+                {project.data.tags.length > 0 && (
+                  <span class="article-tags">
+                    {project.data.tags.map((tag: string) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </span>
+                )}
+              </div>
+              <h2>{project.data.title}</h2>
+              <p>{project.data.description}</p>
+              <span class="project-read-more">View case study <span>&rarr;</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>
