@@ -26,16 +26,16 @@ const articleJsonLd = {
   author: {
     "@type": "Organization",
     name: "Datum Studio",
-    url: "https://datumstudio.ca",
+    url: "https://datumstudio.xyz",
   },
   publisher: {
     "@type": "Organization",
     name: "Datum Studio",
-    url: "https://datumstudio.ca",
+    url: "https://datumstudio.xyz",
   },
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `https://datumstudio.ca/articles/${article.id}/`,
+    "@id": `https://datumstudio.xyz/articles/${article.id}/`,
   },
   keywords: article.data.tags.join(", "),
   inLanguage: "en",
@@ -49,19 +49,19 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://datumstudio.ca",
+      item: "https://datumstudio.xyz",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Articles",
-      item: "https://datumstudio.ca/articles/",
+      item: "https://datumstudio.xyz/articles/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: heading,
-      item: `https://datumstudio.ca/articles/${article.id}/`,
+      item: `https://datumstudio.xyz/articles/${article.id}/`,
     },
   ],
 };

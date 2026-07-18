@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /_astro/
 
-Sitemap: https://datumstudio.ca/sitemap-index.xml
+Sitemap: https://datumstudio.xyz/sitemap-index.xml
 
 # Datum Studio — Everything begins with a reference point.
 # Structured data and sitemap available for machine-readable discovery.

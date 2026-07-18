@@ -9,7 +9,7 @@
   ],
 
   "vars": {
-    "TURNSTILE_SITE_KEY": "<YOUR_TURNSTILE_SITE_KEY>",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAD4t1xClM1TPKrEM",
   },
 
   "env": {
@@ -18,7 +18,7 @@
         { "binding": "SUBMISSIONS", "id": "bab4e482ea5c40858e776de25430e984" },
       ],
       "vars": {
-        "TURNSTILE_SITE_KEY": "<YOUR_PREVIEW_TURNSTILE_SITE_KEY>",
+        "TURNSTILE_SITE_KEY": "0x4AAAAAAD4t1xClM1TPKrEM",
       },
     },
   },
