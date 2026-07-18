@@ -5,7 +5,7 @@
   "compatibility_date": "2026-07-14",
 
   "kv_namespaces": [
-    { "binding": "SUBMISSIONS", "id": "<YOUR_PROD_KV_NAMESPACE_ID>" },
+    { "binding": "SUBMISSIONS", "id": "b433571448544820b024eb35bf1ac4e4" },
   ],
 
   "vars": {
@@ -15,7 +15,7 @@
   "env": {
     "preview": {
       "kv_namespaces": [
-        { "binding": "SUBMISSIONS", "id": "<YOUR_PREVIEW_KV_NAMESPACE_ID>" },
+        { "binding": "SUBMISSIONS", "id": "bab4e482ea5c40858e776de25430e984" },
       ],
       "vars": {
         "TURNSTILE_SITE_KEY": "<YOUR_PREVIEW_TURNSTILE_SITE_KEY>",
