@@ -249,8 +249,7 @@ const values = [
         const result = await response.json() as { ok?: boolean; error?: string };
 
         if (result.ok) {
-          if (note) note.textContent = "Message sent. We typically respond within 2 business days.";
-          form.reset();
+          window.location.href = "/thank-you";
         } else {
           throw new Error(result.error || "Failed to send");
         }
