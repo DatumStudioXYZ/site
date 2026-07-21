@@ -1,5 +1,5 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, getEntry, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
@@ -13,8 +13,14 @@ export async function getStaticPaths() {
 
 const { article }: { article: CollectionEntry<"articles"> } = Astro.props;
 const { Content } = await render(article);
+const author = await getEntry(article.data.author);
+
+if (!author) {
+  throw new Error(`Missing author entry for article: ${article.id}`);
+}
 
 const heading = article.data.title.replace(/ — Datum Studio$/, "");
+const authorUrl = `/authors/${author.data.slug}/`;
 
 const articleJsonLd = {
   "@context": "https://schema.org",
@@ -24,9 +30,11 @@ const articleJsonLd = {
   datePublished: article.data.pubDate.toISOString(),
   dateModified: article.data.updatedDate?.toISOString() ?? article.data.pubDate.toISOString(),
   author: {
-    "@type": "Organization",
-    name: "Datum Studio",
-    url: "https://datumstudio.xyz",
+    "@type": "Person",
+    name: author.data.name,
+    url: `https://datumstudio.xyz${authorUrl}`,
+    image: author.data.avatar,
+    ...(author.data.social ? { sameAs: Object.values(author.data.social) } : {}),
   },
   publisher: {
     "@type": "Organization",
@@ -89,6 +97,10 @@ const breadcrumbJsonLd = {
           </span>
         )}
       </div>
+      <a class="article-author" href={authorUrl}>
+        <img src={author.data.avatar} alt="" loading="lazy" />
+        <span>By {author.data.name}</span>
+      </a>
       <h1>{heading}</h1>
       <p class="article-description">{article.data.description}</p>
       {article.data.updatedDate && (

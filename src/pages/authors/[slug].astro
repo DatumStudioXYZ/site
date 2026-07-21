@@ -1,0 +1,91 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const authors = await getCollection("authors");
+
+  return authors.map((author: CollectionEntry<"authors">) => ({
+    params: { slug: author.data.slug },
+    props: { author },
+  }));
+}
+
+const { author }: { author: CollectionEntry<"authors"> } = Astro.props;
+
+const allArticles = await getCollection("articles", ({ data }: { data: CollectionEntry<"articles">["data"] }) => !data.draft);
+const articles = allArticles
+  .filter((article: CollectionEntry<"articles">) => article.data.author.id === author.id)
+  .sort((a: CollectionEntry<"articles">, b: CollectionEntry<"articles">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const socialEntries = author.data.social
+  ? Object.entries(author.data.social).filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].length > 0)
+  : [];
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: author.data.name,
+  url: `https://datumstudio.xyz/authors/${author.data.slug}/`,
+  image: author.data.avatar,
+  description: author.data.bio,
+  ...(socialEntries.length > 0 ? { sameAs: socialEntries.map(([, url]) => url) } : {}),
+};
+---
+
+<Layout
+  title={`${author.data.name} — Datum Studio`}
+  description={author.data.bio}
+  canonical={`/authors/${author.data.slug}/`}
+  jsonLd={[personJsonLd]}
+>
+  <div class="author-detail">
+    <section class="author-hero section-pad">
+      <img class="author-avatar" src={author.data.avatar} alt="" />
+      <div>
+        <p class="section-kicker">Author</p>
+        <h1>{author.data.name}</h1>
+        <p>{author.data.bio}</p>
+        {socialEntries.length > 0 && (
+          <div class="author-social">
+            {socialEntries.map(([label, url]) => (
+              <a href={url} rel="me">{label}</a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section class="author-articles section-pad">
+      <div class="section-heading">
+        <p class="section-kicker">Articles</p>
+        <h2>Writing by {author.data.name}</h2>
+      </div>
+      {articles.length === 0 ? (
+        <p class="articles-empty">No published articles yet.</p>
+      ) : (
+        <ul class="article-cards">
+          {articles.map((article: CollectionEntry<"articles">) => (
+            <li>
+              <a href={`/articles/${article.id}/`} class="article-card">
+                <div class="article-card-meta">
+                  <time>{article.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+                  {article.data.tags.length > 0 && (
+                    <span class="article-tags">
+                      {article.data.tags.map((tag: string) => (
+                        <span class="tag">{tag}</span>
+                      ))}
+                    </span>
+                  )}
+                </div>
+                <h2>{article.data.title}</h2>
+                <p>{article.data.description}</p>
+                <span class="article-read-more">Read article <span>&rarr;</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </div>
+</Layout>
