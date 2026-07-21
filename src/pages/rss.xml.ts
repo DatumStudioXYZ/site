@@ -3,6 +3,9 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
+  const site = context.site!;
+  const feedUrl = new URL("/rss.xml", site).href;
+  const hubUrl = new URL("/websub/hub", site).href;
   const articles = await getCollection("articles", ({ data }: { data: CollectionEntry<"articles">["data"] }) => !data.draft);
   const projects = await getCollection("projects", ({ data }: { data: CollectionEntry<"projects">["data"] }) => !data.draft);
   const notes = await getCollection("notes", ({ data }: { data: CollectionEntry<"notes">["data"] }) => !data.draft);
@@ -31,8 +34,12 @@ export async function GET(context: APIContext) {
   return rss({
     title: "Datum Studio",
     description: "Design, craft, and building better spaces. Articles, projects, and notes from Datum Studio.",
-    site: context.site!,
+    site,
     items: all,
-    customData: "<language>en-ca</language>",
+    customData: [
+      "<language>en-ca</language>",
+      `<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="hub" href="${hubUrl}" />`,
+      `<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="${feedUrl}" />`,
+    ].join(""),
   });
 }

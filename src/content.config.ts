@@ -34,6 +34,11 @@ const notes = defineCollection({
     title: z.string(),
     pubDate: z.coerce.date(),
     tags: z.array(z.string()).default([]),
+    image: z.object({
+      src: z.string(),
+      alt: z.string().min(1),
+      caption: z.string().optional(),
+    }).optional(),
     draft: z.boolean().default(true),
   }),
 });

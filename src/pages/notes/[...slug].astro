@@ -36,6 +36,7 @@ const noteJsonLd = {
     "@id": `https://datumstudio.xyz/notes/${note.id}/`,
   },
   keywords: note.data.tags.join(", "),
+  ...(note.data.image ? { image: note.data.image.src } : {}),
   inLanguage: "en",
 };
 
@@ -69,6 +70,7 @@ const breadcrumbJsonLd = {
   title={`${note.data.title} — Datum Studio`}
   description={note.data.title}
   canonical={`/notes/${note.id}/`}
+  ogImage={note.data.image?.src}
   ogType="article"
   articlePublished={note.data.pubDate.toISOString()}
   articleTags={note.data.tags}
@@ -91,6 +93,12 @@ const breadcrumbJsonLd = {
     </header>
 
     <div class="note-body section-pad">
+      {note.data.image && (
+        <figure class="note-lead-image">
+          <img src={note.data.image.src} alt={note.data.image.alt} />
+          {note.data.image.caption && <figcaption>{note.data.image.caption}</figcaption>}
+        </figure>
+      )}
       <Content />
     </div>
 

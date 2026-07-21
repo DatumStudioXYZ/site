@@ -25,6 +25,9 @@ const sortedNotes = allNotes.sort(
         {sortedNotes.map((note: CollectionEntry<"notes">) => (
           <li>
             <a href={`/notes/${note.id}/`} class="note-card">
+              {note.data.image && (
+                <img class="note-card-image" src={note.data.image.src} alt={note.data.image.alt} loading="lazy" />
+              )}
               <div class="note-card-meta">
                 <time>{note.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
                 {note.data.tags.length > 0 && (
