@@ -19,7 +19,9 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/ibm-plex-sans": "5.2.8",
-    "astro": "7.0.9"
+    "@noble/curves": "^2.2.0",
+    "astro": "7.0.9",
+    "bech32": "^2.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
