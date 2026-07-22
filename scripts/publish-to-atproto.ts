@@ -108,43 +108,56 @@ function stripFrontmatter(body: string): string {
   return body.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
 }
 
+function graphemes(value: string): string[] {
+  return [...new Intl.Segmenter('en', { granularity: 'grapheme' }).segment(value)].map(({ segment }) => segment);
+}
+
+function fitPost(prefix: string, url: string): string {
+  const separator = '\n\n';
+  const reserved = graphemes(`${separator}${url}`).length;
+  const available = MAX_POST_LENGTH - reserved;
+  const prefixGraphemes = graphemes(prefix);
+
+  if (prefixGraphemes.length <= available) return `${prefix}${separator}${url}`;
+
+  return `${prefixGraphemes.slice(0, Math.max(0, available - 1)).join('').trimEnd()}…${separator}${url}`;
+}
+
 function buildArticlePost(item: ContentItem): string {
   const title = (item.frontmatter.title as string) ?? item.slug;
   const description = (item.frontmatter.description as string) ?? '';
-  const url = `${SITE_URL}/articles/${item.slug}`;
-  const parts = [title];
-  if (description) parts.push(description);
-  parts.push(url);
-  return parts.join('\n\n');
+  const url = `${SITE_URL}/articles/${item.slug}/`;
+  return fitPost(description ? `${title}\n\n${description}` : title, url);
 }
 
 function buildNotePost(item: ContentItem): string {
   const text = stripFrontmatter(item.body);
   if (text.length <= MAX_POST_LENGTH) return text;
   const title = (item.frontmatter.title as string) ?? item.slug;
-  const url = `${SITE_URL}/notes/${item.slug}`;
-  return `${title}\n\n${url}`;
+  const url = `${SITE_URL}/notes/${item.slug}/`;
+  return fitPost(title, url);
 }
 
 async function main() {
-  if (!BLUESKY_HANDLE || !BLUESKY_APP_PASSWORD) {
-    console.error('BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set');
-    process.exit(1);
-  }
-
-  const { AtpAgent } = await import('@atproto/api');
-
-  const agent = new AtpAgent({ service: 'https://bsky.social' });
-
-  console.log(`Authenticating as ${BLUESKY_HANDLE}...`);
-  await agent.login({ identifier: BLUESKY_HANDLE, password: BLUESKY_APP_PASSWORD });
-  console.log('Authenticated.');
-
   const log = await loadPublishLog();
 
   const articles = await readCollection(join(CONTENT_DIR, 'articles'));
   const notes = await readCollection(join(CONTENT_DIR, 'notes'));
   const all = [...articles, ...notes];
+
+  if (!DRY_RUN && (!BLUESKY_HANDLE || !BLUESKY_APP_PASSWORD)) {
+    console.error('BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set');
+    process.exit(1);
+  }
+
+  const { AtpAgent, RichText } = await import('@atproto/api');
+  const agent = new AtpAgent({ service: 'https://bsky.social' });
+
+  if (!DRY_RUN) {
+    console.log(`Authenticating as ${BLUESKY_HANDLE}...`);
+    await agent.login({ identifier: BLUESKY_HANDLE!, password: BLUESKY_APP_PASSWORD! });
+    console.log('Authenticated.');
+  }
 
   let published = 0;
   let skipped = 0;
@@ -176,9 +189,13 @@ async function main() {
 
     console.log(`  publishing: ${key}`);
     try {
+      const richText = new RichText({ text });
+      await richText.detectFacets(agent);
+
       const record = {
         $type: 'app.bsky.feed.post' as const,
-        text,
+        text: richText.text,
+        facets: richText.facets,
         createdAt: new Date().toISOString(),
       };
 

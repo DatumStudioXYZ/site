@@ -71,11 +71,9 @@ Publishing and automation secrets:
 - `FACEBOOK_APP_SECRET`
 - `FACEBOOK_PAGE_ID`
 - `FACEBOOK_PAGE_ACCESS_TOKEN`
-- `TWITTER_API_KEY`
-- `TWITTER_API_SECRET`
-- `TWITTER_ACCESS_TOKEN`
-- `TWITTER_ACCESS_TOKEN_SECRET`
-- `TWITTER_BEARER_TOKEN`
+- `X_CONSUMER_KEY`
+- `X_SECRET_KEY`
+- `X_BEARER_TOKEN`
 
 Root repository secrets are encrypted with SOPS. Set `DATUM_SOPS_AGE_KEY_FILE` to the local age private key file, then use the root `secretes` helper:
 

@@ -137,7 +137,7 @@ textarea:focus { border-color: var(--moss); box-shadow: 0 0 0 2px #3e513322; }
 .form-note { color: var(--muted); font-size: 12px; line-height: 1.5; margin: -12px 0 0; }
 .cf-turnstile { margin: -8px 0 0; }
 
-footer { padding: 42px clamp(24px, 4vw, 64px); display: grid; grid-template-columns: 1.4fr 1fr auto auto; gap: 35px; align-items: center; background: var(--ink); color: var(--paper-light); font-size: 12px; }
+footer { padding: 42px clamp(24px, 4vw, 64px); display: grid; grid-template-columns: 1.4fr 1fr auto auto auto; gap: 35px; align-items: center; background: var(--ink); color: var(--paper-light); font-size: 12px; }
 .footer-mark { font-size: 12px; }
 footer p { margin: 0; color: #d2d0c8; }
 footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 3px; }
@@ -192,6 +192,11 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
 .article-body pre code { background: transparent; border: 0; padding: 0; color: inherit; }
 
 .article-footer { border-top: 1px solid var(--line); padding-top: clamp(40px, 5vw, 80px); padding-bottom: clamp(40px, 5vw, 80px); }
+.article-footer, .note-footer, .project-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; background: var(--paper-light); color: var(--ink); }
+.article-footer .article-back, .note-footer .note-back, .project-footer .project-back { margin-bottom: 0; }
+.share-on-bluesky { display: inline-flex; align-items: center; gap: 8px; color: var(--moss); font-size: 14px; font-weight: 650; border-bottom: 1px solid color-mix(in srgb, var(--moss) 45%, transparent); padding-bottom: 3px; }
+.share-on-bluesky span { transition: transform .2s ease; }
+.share-on-bluesky:hover span { transform: translate(2px, -2px); }
 
 /* Authors */
 .author-detail { background: var(--paper-light); }
@@ -456,6 +461,7 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
   .value-card h3 { margin: 30px 0 10px; }
   .articles-hero .section-heading, .projects-hero .section-heading, .notes-hero .section-heading, .services-hero .section-heading, .process-hero .section-heading { grid-template-columns: 1fr; gap: 24px; }
   .article-header h1, .project-header h1, .note-header h1 { font-size: clamp(36px, 10vw, 56px); }
+  .article-footer, .note-footer, .project-footer { align-items: flex-start; flex-direction: column; }
   .note-card-image { width: 100%; float: none; margin: 0 0 18px; }
   .author-hero, .author-articles .section-heading { grid-template-columns: 1fr; gap: 24px; }
   .author-avatar { width: min(180px, 54vw); }

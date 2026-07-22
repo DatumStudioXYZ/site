@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  path: string;
+}
+
+const { title, path } = Astro.props;
+const url = new URL(path, Astro.site).href;
+const shareText = `${title}\n\n${url}`;
+const shareUrl = `https://bsky.app/intent/compose?text=${encodeURIComponent(shareText)}`;
+---
+
+<a class="share-on-bluesky" href={shareUrl} target="_blank" rel="noopener noreferrer">
+  Share on Bluesky
+  <span aria-hidden="true">↗</span>
+</a>

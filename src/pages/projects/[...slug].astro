@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import ShareOnBluesky from "../../components/ShareOnBluesky.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }: { data: CollectionEntry<"projects">["data"] }) => !data.draft);
@@ -96,6 +97,7 @@ const breadcrumbJsonLd = {
 
     <footer class="project-footer section-pad">
       <a class="project-back" href="/projects/">&larr; All projects</a>
+      <ShareOnBluesky title={heading} path={`/projects/${project.id}/`} />
     </footer>
   </article>
 </Layout>
