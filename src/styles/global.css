@@ -199,6 +199,7 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
 .author-avatar { width: 100%; aspect-ratio: 1; object-fit: cover; box-shadow: var(--shadow-photo); }
 .author-hero h1 { font-size: clamp(44px, 5vw, 72px); line-height: 1; margin: 18px 0 18px; }
 .author-hero p:not(.section-kicker) { color: var(--muted); font-size: clamp(17px, 1.4vw, 20px); line-height: 1.7; margin: 0; }
+.author-email { display: inline-block; margin-top: 22px; color: var(--moss); font-size: 14px; font-weight: 650; border-bottom: 1px solid color-mix(in srgb, var(--moss) 45%, transparent); padding-bottom: 3px; }
 .author-social { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 24px; }
 .author-social a { color: var(--moss); font-size: 14px; font-weight: 650; border-bottom: 1px solid color-mix(in srgb, var(--moss) 45%, transparent); padding-bottom: 3px; text-transform: capitalize; }
 .author-articles { background: var(--paper-light); }

@@ -21,6 +21,7 @@ const authors = defineCollection({
     name: z.string(),
     slug: z.string(),
     bio: z.string(),
+    email: z.string().min(1).optional(),
     avatar: z.string().min(1),
     social: z.object({
       website: z.string().min(1).optional(),

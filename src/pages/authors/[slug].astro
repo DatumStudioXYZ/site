@@ -29,6 +29,7 @@ const personJsonLd = {
   url: `https://datumstudio.xyz/authors/${author.data.slug}/`,
   image: author.data.avatar,
   description: author.data.bio,
+  ...(author.data.email ? { email: author.data.email } : {}),
   ...(socialEntries.length > 0 ? { sameAs: socialEntries.map(([, url]) => url) } : {}),
 };
 ---
@@ -46,6 +47,9 @@ const personJsonLd = {
         <p class="section-kicker">Author</p>
         <h1>{author.data.name}</h1>
         <p>{author.data.bio}</p>
+        {author.data.email && (
+          <a class="author-email" href={`mailto:${author.data.email}`}>{author.data.email}</a>
+        )}
         {socialEntries.length > 0 && (
           <div class="author-social">
             {socialEntries.map(([label, url]) => (
