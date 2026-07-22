@@ -1,0 +1,15 @@
+name = "datum-activitypub"
+main = "src/index.ts"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+# KV namespace for actor/follower storage
+# Create with: wrangler kv namespace create ACTORS
+# Then paste the id below
+# kv_namespaces = [
+#   { binding = "ACTORS", id = "YOUR_KV_NAMESPACE_ID" }
+# ]
+
+# Environment variables (set via wrangler secret put or .dev.vars)
+# DATUM_SHARED_SECRET - shared secret between Pages site and this Worker
+# SITE_URL - https://datumstudio.xyz

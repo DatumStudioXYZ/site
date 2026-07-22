@@ -16,7 +16,13 @@
     "publish:nostr": "node --experimental-strip-types scripts/publish-nostr.ts",
     "publish": "npm run build && npm run publish:nostr",
     "process-images": "node --experimental-strip-types scripts/process-images.ts",
-    "upload-images": "node --experimental-strip-types scripts/upload-images.ts"
+    "upload-images": "node --experimental-strip-types scripts/upload-images.ts",
+    "publish:dry-run": "node --experimental-strip-types scripts/orchestrate-publish.ts --dry-run",
+    "publish:all": "node --experimental-strip-types scripts/orchestrate-publish.ts --no-dry-run",
+    "publish:platform": "node --experimental-strip-types scripts/orchestrate-publish.ts --no-dry-run --platform",
+    "publish:atproto": "node --experimental-strip-types scripts/publish-to-atproto.ts",
+    "publish:atproto:dry-run": "node --experimental-strip-types scripts/publish-to-atproto.ts --dry-run",
+    "atproto:setup": "node --experimental-strip-types scripts/create-atproto-publication.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.3",
