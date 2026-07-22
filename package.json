@@ -12,16 +12,22 @@
     "preview": "astro preview",
     "check": "astro check",
     "deploy": "wrangler pages deploy dist",
-    "deploy:prod": "wrangler pages deploy dist --branch main"
+    "deploy:prod": "wrangler pages deploy dist --branch main",
+    "publish:nostr": "node --experimental-strip-types scripts/publish-nostr.ts",
+    "publish": "npm run build && npm run publish:nostr",
+    "process-images": "node --experimental-strip-types scripts/process-images.ts",
+    "upload-images": "node --experimental-strip-types scripts/upload-images.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.3",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
+    "@aws-sdk/client-s3": "^3.1092.0",
     "@fontsource-variable/ibm-plex-sans": "5.2.8",
     "@noble/curves": "^2.2.0",
     "astro": "7.0.9",
-    "bech32": "^2.0.0"
+    "bech32": "^2.0.0",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",

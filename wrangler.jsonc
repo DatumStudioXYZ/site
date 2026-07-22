@@ -8,6 +8,10 @@
     { "binding": "SUBMISSIONS", "id": "b433571448544820b024eb35bf1ac4e4" },
   ],
 
+  "d1_databases": [
+    { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "" },
+  ],
+
   "vars": {
     "TURNSTILE_SITE_KEY": "0x4AAAAAAD4t1xClM1TPKrEM",
   },
@@ -16,6 +20,9 @@
     "preview": {
       "kv_namespaces": [
         { "binding": "SUBMISSIONS", "id": "bab4e482ea5c40858e776de25430e984" },
+      ],
+      "d1_databases": [
+        { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "" },
       ],
       "vars": {
         "TURNSTILE_SITE_KEY": "0x4AAAAAAD4t1xClM1TPKrEM",

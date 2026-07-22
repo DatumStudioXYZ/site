@@ -62,4 +62,33 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { articles, authors, projects, notes };
+const shorts = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/shorts" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().default(''),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+    videoUrl: z.string().url(),
+    thumbnail: z.string().url().optional(),
+    duration: z.number().optional(),
+    draft: z.boolean().default(true),
+  }),
+});
+
+const videos = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/videos" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+    videoUrl: z.string().url(),
+    thumbnail: z.string().url().optional(),
+    duration: z.number().optional(),
+    transcript: z.string().optional(),
+    draft: z.boolean().default(true),
+  }),
+});
+
+export const collections = { articles, authors, projects, notes, shorts, videos };
