@@ -1,3 +1,26 @@
+---
+interface Props {
+  inverted?: boolean;
+}
+
+const { inverted = false } = Astro.props;
+const lightLogo = inverted ? "logo-dark.avif" : "logo.avif";
+const darkLogo = inverted ? "logo.avif" : "logo-dark.avif";
+---
+
 <span class="brand-lockup" aria-hidden="true">
-  <img src="/logo.png" alt="Datum Studio" class="wordmark-img" width="1847" height="852" />
+  <picture>
+    <source
+      srcset={`https://images.datumstudio.xyz/${darkLogo}`}
+      media="(prefers-color-scheme: dark)"
+      type="image/avif"
+    />
+    <img
+      src={`https://images.datumstudio.xyz/${lightLogo}`}
+      alt=""
+      class="wordmark-img"
+      width="1585"
+      height="390"
+    />
+  </picture>
 </span>

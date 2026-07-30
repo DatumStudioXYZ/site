@@ -37,7 +37,7 @@ const defaultJsonLd: Record<string, any>[] = [
     "@type": "Organization",
     name: siteName,
     url: Astro.site?.href,
-    logo: "/logo.png",
+    logo: "https://images.datumstudio.xyz/logo.avif",
     description: "Design studio working across architecture, craftsmanship, technology, and systems thinking. Golden Horseshoe, GTA, Muskoka, and remote.",
     email: "hello@livingsystems.studio",
     areaServed: {
@@ -79,9 +79,8 @@ const allJsonLd = [...defaultJsonLd, ...jsonLd];
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#3f4a3d" />
-    <link rel="icon" type="image/jpeg" sizes="32x32" href="/favicon-32x32.jpg" />
-    <link rel="icon" type="image/jpeg" sizes="16x16" href="/favicon-16x16.jpg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.jpg" />
+    <link rel="icon" type="image/avif" href="https://images.datumstudio.xyz/favicon.avif" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/avif" href="https://images.datumstudio.xyz/favicon-dark.avif" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={absoluteCanonical} />
     <link rel="alternate" type="application/rss+xml" title={`${siteName} — Articles`} href="/rss.xml" />
     <title>{title}</title>
@@ -140,7 +139,7 @@ const allJsonLd = [...defaultJsonLd, ...jsonLd];
       <slot />
 
       <footer>
-        <a class="wordmark footer-mark" href="/"><Wordmark /></a>
+        <a class="wordmark footer-mark" href="/"><Wordmark inverted /></a>
         <p>Everything begins with a reference point.</p>
         <a href="https://bsky.app/profile/datumstudio.xyz" rel="me">Bluesky</a>
         <a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>

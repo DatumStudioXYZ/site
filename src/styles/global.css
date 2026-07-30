@@ -28,7 +28,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .wordmark { display: inline-flex; align-items: center; color: inherit; }
 .wordmark-img { height: 22px; width: auto; display: block; }
-.footer-mark .wordmark-img { filter: invert(1); }
 .nav { display: flex; align-items: center; gap: clamp(22px, 3vw, 46px); font-size: 14px; font-weight: 600; }
 .nav a:not(.nav-contact) { position: relative; }
 .nav a:not(.nav-contact)::after { content: ""; height: 1px; width: 0; background: var(--ink); position: absolute; left: 0; bottom: -6px; transition: width .2s ease; }
