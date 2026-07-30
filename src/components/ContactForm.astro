@@ -1,0 +1,34 @@
+<form class="contact-form">
+  <div class="field-row">
+    <label><span>Name</span><input name="name" type="text" autocomplete="name" required placeholder="Your name" /></label>
+    <label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
+  </div>
+  <div aria-hidden="true" class="honeypot"><label>Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
+  <label><span>Tell us what is not working</span><textarea name="message" required rows="5" placeholder="A few sentences is plenty…"></textarea></label>
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAAD4t1xClM1TPKrEM"></div>
+  <button class="button button-primary submit" type="submit">Send message <span>↗</span></button>
+  <p class="form-note" aria-live="polite">We typically respond within 2 business days.</p>
+</form>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+  const form = document.querySelector<HTMLFormElement>(".contact-form");
+  const button = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+  const note = form?.querySelector<HTMLElement>(".form-note");
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    if (data.get("website")) return;
+    if (button) { button.disabled = true; button.innerHTML = "Sending… <span>↻</span>"; }
+    try {
+      const response = await fetch("/api/contact", { method: "POST", body: data });
+      const result = await response.json() as { ok?: boolean; error?: string };
+      if (result.ok) window.location.href = "/thank-you";
+      else throw new Error(result.error || "Failed to send");
+    } catch (error) {
+      if (note) note.textContent = "Something went wrong. Please try again or email us directly at hello@livingsystems.studio.";
+      console.error("Contact form error:", error);
+    } finally {
+      if (button) { button.disabled = false; button.innerHTML = "Send message <span>↗</span>"; }
+    }
+  });
+</script>

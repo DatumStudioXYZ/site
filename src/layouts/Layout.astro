@@ -2,6 +2,7 @@
 import "@fontsource-variable/ibm-plex-sans/wdth.css";
 import { ClientRouter } from "astro:transitions";
 import Wordmark from "../components/Wordmark.astro";
+import { site } from "../data/site";
 import "../styles/global.css";
 
 interface Props {
@@ -17,9 +18,9 @@ interface Props {
 
 const {
   title,
-  description = "Datum brings together architecture, craftsmanship, technology, and systems thinking to create spaces that work beautifully.",
+  description = site.description,
   canonical = Astro.url.href,
-  ogImage = "https://images.datumstudio.xyz/workshop-wide.jpeg",
+  ogImage = site.defaultImage,
   ogType = "website",
   jsonLd = [],
   articlePublished,
@@ -27,7 +28,7 @@ const {
 } = Astro.props;
 
 const year = new Date().getFullYear();
-const siteName = "Datum Studio";
+const siteName = site.name;
 const absoluteOgImage = new URL(ogImage, Astro.site).href;
 const absoluteCanonical = new URL(canonical, Astro.site).href;
 
@@ -37,12 +38,12 @@ const defaultJsonLd: Record<string, any>[] = [
     "@type": "Organization",
     name: siteName,
     url: Astro.site?.href,
-    logo: "https://images.datumstudio.xyz/logo.avif",
+    logo: site.logo,
     description: "Design studio working across architecture, craftsmanship, technology, and systems thinking. Golden Horseshoe, GTA, Muskoka, and remote.",
-    email: "hello@livingsystems.studio",
+    email: site.email,
     areaServed: {
       "@type": "GeoCircle",
-      name: "Golden Horseshoe, GTA, Muskoka",
+      name: site.serviceArea.join(", "),
     },
     knowsAbout: [
       "Architecture",
@@ -59,7 +60,7 @@ const defaultJsonLd: Record<string, any>[] = [
     "@type": "WebSite",
     name: siteName,
     url: Astro.site?.href,
-    description: "Everything begins with a reference point.",
+    description: site.tagline,
     publisher: {
       "@type": "Organization",
       name: siteName,
@@ -140,9 +141,9 @@ const allJsonLd = [...defaultJsonLd, ...jsonLd];
 
       <footer>
         <a class="wordmark footer-mark" href="/"><Wordmark inverted /></a>
-        <p>Everything begins with a reference point.</p>
-        <a href="https://bsky.app/profile/datumstudio.xyz" rel="me">Bluesky</a>
-        <a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>
+        <p>{site.tagline}</p>
+        <a href={site.social.bluesky} rel="me">Bluesky</a>
+        <a href={site.social.rss} rel="alternate" type="application/rss+xml">RSS</a>
         <a href="/#contact">Start a conversation</a>
         <p>&copy; {year} Datum Studio</p>
       </footer>

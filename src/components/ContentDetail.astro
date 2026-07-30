@@ -1,0 +1,27 @@
+---
+import ShareOnBluesky from "./ShareOnBluesky.astro";
+interface Props {
+  kind: "article" | "note" | "project";
+  heading: string;
+  description?: string;
+  backHref: string;
+  backLabel: string;
+  sharePath: string;
+}
+const { kind, heading, description, backHref, backLabel, sharePath } = Astro.props;
+---
+<article class:list={["content-detail", `${kind}-detail`]}>
+  <header class:list={["content-header", `${kind}-header`, "section-pad"]}>
+    <a class="content-back" href={backHref}>&larr; {backLabel}</a>
+    <slot name="meta" />
+    <slot name="author" />
+    <h1>{heading}</h1>
+    {description && <p class="content-description">{description}</p>}
+    <slot name="after-heading" />
+  </header>
+  <div class:list={["content-body", `${kind}-body`, "section-pad"]}><slot /></div>
+  <footer class:list={["content-footer", `${kind}-footer`, "section-pad"]}>
+    <a class="content-back" href={backHref}>&larr; {backLabel}</a>
+    <ShareOnBluesky title={heading} path={sharePath} />
+  </footer>
+</article>

@@ -1,0 +1,17 @@
+---
+interface Props { src: string; alt: string; caption?: string; class?: string; href?: string; loading?: "eager" | "lazy"; }
+const { src, alt, caption, class: className, href, loading } = Astro.props;
+---
+<figure class:list={["technical-frame", className]}>
+  {href ? (
+    <a href={href}>
+      <img src={src} alt={alt} loading={loading} />
+      {caption && <figcaption>{caption}</figcaption>}
+    </a>
+  ) : (
+    <>
+      <img src={src} alt={alt} loading={loading} />
+      {caption && <figcaption>{caption}</figcaption>}
+    </>
+  )}
+</figure>

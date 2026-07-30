@@ -1,0 +1,13 @@
+---
+import { conversationCopy } from "../data/site";
+interface Props { kicker?: string; title?: string; body?: string; href?: string; label?: string; }
+const { kicker = conversationCopy.label, title = conversationCopy.title, body = conversationCopy.body, href = "/#contact", label = conversationCopy.label } = Astro.props;
+---
+<section class="page-cta section-pad">
+  <div class="page-cta-inner">
+    <p class="section-kicker">{kicker}</p>
+    <h2>{title}</h2>
+    <p>{body}</p>
+    <a class="button button-primary" href={href}>{label} <span>↗</span></a>
+  </div>
+</section>

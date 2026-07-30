@@ -1,19 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-const services = [
-  ["01", "Work Better", "Home offices, studios, and workshops designed around focus, flow, and the tools you actually use."],
-  ["02", "Live Better", "Storage, kitchens, mudrooms, and living spaces that remove friction from everyday routines."],
-  ["03", "Build Better", "Custom millwork, built-ins, and furniture made with honest materials and a long working life."],
-  ["04", "Think Better", "Planning, automation, workflow, and systems consulting that makes the whole project clearer."],
-];
-
-const steps = [
-  ["Understand", "We begin with people: how you live, where friction appears, and what a better day should feel like."],
-  ["Establish", "We find the reference point—the priorities and constraints against which every decision is measured."],
-  ["Integrate", "Space, objects, materials, and technology are developed as one system rather than separate products."],
-  ["Refine", "We build, test, document, and simplify until the result feels natural, durable, and easy to maintain."],
-];
+import ContactForm from "../components/ContactForm.astro";
+import TechnicalFrame from "../components/TechnicalFrame.astro";
+import { services } from "../data/services";
+import { processSteps } from "../data/process";
+import { conversationCopy, site } from "../data/site";
 
 const values = [
   ["Intentional", "Every decision has a purpose."],
@@ -34,45 +25,12 @@ const values = [
       name: "Datum Studio",
       url: "https://datumstudio.xyz",
       description: "Design studio working across architecture, craftsmanship, technology, and systems thinking.",
-      email: "hello@livingsystems.studio",
-      areaServed: ["Golden Horseshoe", "GTA", "Muskoka"],
+      email: site.email,
+      areaServed: site.serviceArea,
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Datum Studio Services",
-        itemListElement: [
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Work Better",
-              description: "Home offices, studios, and workshops designed around focus, flow, and the tools you actually use.",
-            },
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Live Better",
-              description: "Storage, kitchens, mudrooms, and living spaces that remove friction from everyday routines.",
-            },
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Build Better",
-              description: "Custom millwork, built-ins, and furniture made with honest materials and a long working life.",
-            },
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Think Better",
-              description: "Planning, automation, workflow, and systems consulting that makes the whole project clearer.",
-            },
-          },
-        ],
+        itemListElement: services.map((service) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: service.title, description: service.tagline } })),
       },
     },
   ]}
@@ -86,12 +44,9 @@ const values = [
         <a class="button button-primary" href="#contact">Start a conversation <span>↗</span></a>
         <a class="text-link" href="#about">Why Datum <span>↓</span></a>
       </div>
-      <p class="location"><span></span> Golden Horseshoe · GTA · Muskoka · Remote</p>
+      <p class="location"><span></span> {site.serviceAreaLabel}</p>
     </div>
-    <figure class="hero-image technical-frame">
-      <img src="https://images.datumstudio.xyz/workshop-wide.jpeg" alt="A residential workshop being studied before redesign and organization" />
-      <figcaption>Existing conditions · Workshop study</figcaption>
-    </figure>
+    <TechnicalFrame class="hero-image" src="https://images.datumstudio.xyz/workshop-wide.jpeg" alt="A residential workshop being studied before redesign and organization" caption="Existing conditions · Workshop study" />
   </section>
 
   <section class="datum-story section-pad" id="about">
@@ -119,11 +74,11 @@ const values = [
       <p>One studio thinking across the room, the object, and the technology inside it.</p>
     </div>
     <div class="service-grid">
-      {services.map(([number, title, text]) => (
+      {services.map((service) => (
         <article class="service-card">
-          <span class="service-number">{number}</span>
-          <h3>{title}</h3>
-          <p>{text}</p>
+          <span class="service-number">{service.number}</span>
+          <h3>{service.title}</h3>
+          <p>{service.tagline}</p>
         </article>
       ))}
     </div>
@@ -138,17 +93,9 @@ const values = [
       <p>The problem is not simply clutter. It is a room without a system—tools without homes, storage without memory, and valuable floor space buried beneath competing needs.</p>
     </div>
     <div class="project-gallery">
-      <figure class="project-main technical-frame">
-        <a href="/projects/workshop/">
-          <img src="https://images.datumstudio.xyz/workshop-floor.jpeg" alt="Open floor area emerging during a garage workshop reorganization" />
-          <figcaption>Establishing the working floor</figcaption>
-        </a>
-      </figure>
+      <TechnicalFrame class="project-main" href="/projects/workshop/" src="https://images.datumstudio.xyz/workshop-floor.jpeg" alt="Open floor area emerging during a garage workshop reorganization" caption="Establishing the working floor" />
       <div class="project-side">
-        <figure class="technical-frame">
-          <img src="https://images.datumstudio.xyz/workshop-storage.jpeg" alt="Tools and storage awaiting a new organized system" />
-          <figcaption>Inventory before infrastructure</figcaption>
-        </figure>
+        <TechnicalFrame src="https://images.datumstudio.xyz/workshop-storage.jpeg" alt="Tools and storage awaiting a new organized system" caption="Inventory before infrastructure" />
         <div class="project-note">
           <span class="status"><i></i> Design in progress</span>
           <p>The system combines task zones, overhead tire storage, opaque labelled totes, and a searchable QR inventory—physical order with a digital memory.</p>
@@ -164,11 +111,11 @@ const values = [
       <h2>Find the datum.<br />Design from there.</h2>
     </div>
     <ol class="process-list">
-      {steps.map(([title, text], index) => (
+      {processSteps.map((step) => (
         <li>
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          <h3>{title}</h3>
-          <p>{text}</p>
+          <span>{step.number}</span>
+          <h3>{step.title}</h3>
+          <p>{step.summary}</p>
         </li>
       ))}
     </ol>
@@ -204,64 +151,10 @@ const values = [
   <section class="contact section-pad" id="contact">
     <div class="contact-copy">
       <p class="section-kicker">Start a conversation</p>
-      <h2>What would make life work better?</h2>
-      <p>Tell us about the space, routine, object, or stubborn problem. Early ideas are welcome; you do not need a finished brief.</p>
-      <p class="contact-meta">Serving the Golden Horseshoe, GTA, Muskoka, and remote projects.</p>
+      <h2>{conversationCopy.title}</h2>
+      <p>{conversationCopy.body}</p>
+      <p class="contact-meta">Serving {site.serviceArea.join(", ")}, and remote projects.</p>
     </div>
-    <form class="contact-form">
-      <div class="field-row">
-        <label><span>Name</span><input name="name" type="text" autocomplete="name" required placeholder="Your name" /></label>
-        <label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
-      </div>
-      <div aria-hidden="true" class="honeypot">
-        <label>Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
-      </div>
-      <label><span>Tell us what is not working</span><textarea name="message" required rows="5" placeholder="A few sentences is plenty…"></textarea></label>
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD4t1xClM1TPKrEM"></div>
-      <button class="button button-primary submit" type="submit">Send message <span>↗</span></button>
-      <p class="form-note" aria-live="polite">We typically respond within 2 business days.</p>
-    </form>
+    <ContactForm />
   </section>
-
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script>
-    const form = document.querySelector<HTMLFormElement>(".contact-form");
-    const button = form?.querySelector<HTMLButtonElement>("button[type='submit']");
-    const note = form?.querySelector<HTMLElement>(".form-note");
-
-    form?.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const data = new FormData(form);
-      if (data.get("website")) return;
-
-      if (button) {
-        button.disabled = true;
-        button.innerHTML = "Sending… <span>↻</span>";
-      }
-
-      try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          body: data,
-        });
-
-        const result = await response.json() as { ok?: boolean; error?: string };
-
-        if (result.ok) {
-          window.location.href = "/thank-you";
-        } else {
-          throw new Error(result.error || "Failed to send");
-        }
-      } catch (error) {
-        if (note) note.textContent = "Something went wrong. Please try again or email us directly at hello@livingsystems.studio.";
-        console.error("Contact form error:", error);
-      } finally {
-        if (button) {
-          button.disabled = false;
-          button.innerHTML = "Send message <span>↗</span>";
-        }
-      }
-    });
-  </script>
 </Layout>

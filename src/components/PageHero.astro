@@ -1,0 +1,16 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  intro?: string;
+  theme?: "light" | "dark";
+}
+const { kicker, title, intro, theme = "light" } = Astro.props;
+---
+<section class:list={["page-hero", "section-pad", { "page-hero--dark": theme === "dark" }]}>
+  <div class:list={["section-heading", { light: theme === "dark" }]}>
+    <p class="section-kicker">{kicker}</p>
+    <h2>{title}</h2>
+    {intro && <p>{intro}</p>}
+  </div>
+</section>

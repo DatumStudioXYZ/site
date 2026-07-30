@@ -1,7 +1,10 @@
 ---
 import { getCollection, getEntry, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import ShareOnBluesky from "../../components/ShareOnBluesky.astro";
+import ContentDetail from "../../components/ContentDetail.astro";
+import Tags from "../../components/Tags.astro";
+import { breadcrumbs } from "../../lib/structured-data";
+import { site } from "../../data/site";
 
 export async function getStaticPaths() {
   const articles = await getCollection("articles", ({ data }: { data: CollectionEntry<"articles">["data"] }) => !data.draft);
@@ -33,47 +36,24 @@ const articleJsonLd = {
   author: {
     "@type": "Person",
     name: author.data.name,
-    url: `https://datumstudio.xyz${authorUrl}`,
+    url: `${site.url}${authorUrl}`,
     image: author.data.avatar,
     ...(author.data.social ? { sameAs: Object.values(author.data.social) } : {}),
   },
   publisher: {
     "@type": "Organization",
-    name: "Datum Studio",
-    url: "https://datumstudio.xyz",
+    name: site.name,
+    url: site.url,
   },
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `https://datumstudio.xyz/articles/${article.id}/`,
+    "@id": `${site.url}/articles/${article.id}/`,
   },
   keywords: article.data.tags.join(", "),
   inLanguage: "en",
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://datumstudio.xyz",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Articles",
-      item: "https://datumstudio.xyz/articles/",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: heading,
-      item: `https://datumstudio.xyz/articles/${article.id}/`,
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbs([{ name: "Home", path: "/" }, { name: "Articles", path: "/articles/" }, { name: heading, path: `/articles/${article.id}/` }]);
 ---
 
 <Layout
@@ -85,37 +65,18 @@ const breadcrumbJsonLd = {
   articleTags={article.data.tags}
   jsonLd={[articleJsonLd, breadcrumbJsonLd]}
 >
-  <article class="article-detail">
-    <header class="article-header section-pad">
-      <a class="article-back" href="/articles/">&larr; All articles</a>
-      <div class="article-header-content">
+  <ContentDetail kind="article" heading={heading} description={article.data.description} backHref="/articles/" backLabel="All articles" sharePath={`/articles/${article.id}/`}>
+      <div slot="meta" class="content-header-meta">
         <time>{article.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
-        {article.data.tags.length > 0 && (
-          <span class="article-tags">
-            {article.data.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </span>
-        )}
+        <Tags tags={article.data.tags} />
       </div>
-      <a class="article-author" href={authorUrl}>
+      <a slot="author" class="article-author" href={authorUrl}>
         <img src={author.data.avatar} alt="" loading="lazy" />
         <span>By {author.data.name}</span>
       </a>
-      <h1>{heading}</h1>
-      <p class="article-description">{article.data.description}</p>
       {article.data.updatedDate && (
-        <p class="article-updated">Updated {article.data.updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+        <p slot="after-heading" class="article-updated">Updated {article.data.updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
       )}
-    </header>
-
-    <div class="article-body section-pad">
       <Content />
-    </div>
-
-    <footer class="article-footer section-pad">
-      <a class="article-back" href="/articles/">&larr; All articles</a>
-      <ShareOnBluesky title={heading} path={`/articles/${article.id}/`} />
-    </footer>
-  </article>
+  </ContentDetail>
 </Layout>

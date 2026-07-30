@@ -1,7 +1,10 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import ShareOnBluesky from "../../components/ShareOnBluesky.astro";
+import ContentDetail from "../../components/ContentDetail.astro";
+import Tags from "../../components/Tags.astro";
+import { breadcrumbs, organization } from "../../lib/structured-data";
+import { site } from "../../data/site";
 
 export async function getStaticPaths() {
   const notes = await getCollection("notes", ({ data }: { data: CollectionEntry<"notes">["data"] }) => !data.draft);
@@ -22,49 +25,18 @@ const noteJsonLd = {
   "@type": "Article",
   headline: heading,
   datePublished: note.data.pubDate.toISOString(),
-  author: {
-    "@type": "Organization",
-    name: "Datum Studio",
-    url: "https://datumstudio.xyz",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "Datum Studio",
-    url: "https://datumstudio.xyz",
-  },
+  author: organization,
+  publisher: organization,
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `https://datumstudio.xyz/notes/${note.id}/`,
+    "@id": `${site.url}/notes/${note.id}/`,
   },
   keywords: note.data.tags.join(", "),
   ...(note.data.image ? { image: note.data.image.src } : {}),
   inLanguage: "en",
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://datumstudio.xyz",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Notes",
-      item: "https://datumstudio.xyz/notes/",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: heading,
-      item: `https://datumstudio.xyz/notes/${note.id}/`,
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbs([{ name: "Home", path: "/" }, { name: "Notes", path: "/notes/" }, { name: heading, path: `/notes/${note.id}/` }]);
 ---
 
 <Layout
@@ -77,23 +49,11 @@ const breadcrumbJsonLd = {
   articleTags={note.data.tags}
   jsonLd={[noteJsonLd, breadcrumbJsonLd]}
 >
-  <article class="note-detail">
-    <header class="note-header section-pad">
-      <a class="note-back" href="/notes/">&larr; All notes</a>
-      <div class="note-header-meta">
+  <ContentDetail kind="note" heading={heading} backHref="/notes/" backLabel="All notes" sharePath={`/notes/${note.id}/`}>
+      <div slot="meta" class="content-header-meta">
         <time>{note.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
-        {note.data.tags.length > 0 && (
-          <span class="article-tags">
-            {note.data.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </span>
-        )}
+        <Tags tags={note.data.tags} />
       </div>
-      <h1>{heading}</h1>
-    </header>
-
-    <div class="note-body section-pad">
       {note.data.image && (
         <figure class="note-lead-image">
           <img src={note.data.image.src} alt={note.data.image.alt} />
@@ -101,11 +61,5 @@ const breadcrumbJsonLd = {
         </figure>
       )}
       <Content />
-    </div>
-
-    <footer class="note-footer section-pad">
-      <a class="note-back" href="/notes/">&larr; All notes</a>
-      <ShareOnBluesky title={heading} path={`/notes/${note.id}/`} />
-    </footer>
-  </article>
+  </ContentDetail>
 </Layout>

@@ -1,0 +1,7 @@
+---
+interface Props { kind: "articles" | "notes" | "projects"; empty: boolean; emptyMessage: string; }
+const { kind, empty, emptyMessage } = Astro.props;
+---
+<section class:list={["content-list", `${kind}-list`, "section-pad"]}>
+  {empty ? <p class="content-empty">{emptyMessage}</p> : <ul class:list={["content-cards", `${kind.slice(0, -1)}-cards`]}><slot /></ul>}
+</section>
