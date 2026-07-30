@@ -9,6 +9,11 @@ npm install
 npm run dev
 ```
 
+`npm run dev` rebuilds the Astro site on changes and serves it through Wrangler at
+`http://localhost:8788`, including Pages Functions and local KV/D1 bindings.
+For the faster Astro-only server without Cloudflare bindings, run
+`npm run dev:astro`.
+
 ## Production build
 
 ```sh

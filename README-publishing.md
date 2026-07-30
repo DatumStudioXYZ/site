@@ -6,7 +6,8 @@ How content gets from this repo to the public.
 
 | Command | What it does | Safe to run locally? |
 |---|---|---|
-| `npm run dev` | Local dev server. No publishing. | Yes |
+| `npm run dev` | Wrangler local server with Pages Functions and local bindings. No publishing. | Yes |
+| `npm run dev:astro` | Faster Astro-only server without Pages Functions or bindings. | Yes |
 | `npm run build` | Static build to `dist/`. No publishing. | Yes |
 | `npm run publish:dry-run` | Shows what would publish without actually publishing. | Yes |
 | `npm run publish:all` | Builds and publishes to all configured platforms. | **No — publishes publicly** |
