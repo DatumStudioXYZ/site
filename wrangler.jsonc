@@ -9,7 +9,7 @@
   ],
 
   "d1_databases": [
-    { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "" },
+    { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "fa320536-9143-4081-9705-dc7235f584cf" },
   ],
 
   "vars": {
@@ -22,7 +22,7 @@
         { "binding": "SUBMISSIONS", "id": "bab4e482ea5c40858e776de25430e984" },
       ],
       "d1_databases": [
-        { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "" },
+        { "binding": "PUBLISH_LOG", "database_name": "datum-publish-log", "database_id": "fa320536-9143-4081-9705-dc7235f584cf" },
       ],
       "vars": {
         "TURNSTILE_SITE_KEY": "0x4AAAAAAD4t1xClM1TPKrEM",
