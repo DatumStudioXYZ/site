@@ -6,7 +6,14 @@
   "packageManager": "npm@10.9.2",
   "engines": {
     "node": "^22.12.0 || >=24",
-    "npm": ">=10.9 <12"
+    "npm": "10.9.x"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "10.9.x",
+      "onFail": "error"
+    }
   },
   "scripts": {
     "dev": "concurrently --kill-others --names build,wrangler --prefix-colors cyan,magenta \"npm:dev:build\" \"npm:dev:wrangler\"",
