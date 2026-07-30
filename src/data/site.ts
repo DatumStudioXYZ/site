@@ -6,7 +6,7 @@ export const site = {
   tagline: "Everything begins with a reference point.",
   serviceArea: ["Golden Horseshoe", "GTA", "Muskoka"],
   serviceAreaLabel: "Golden Horseshoe · GTA · Muskoka · Remote",
-  defaultImage: "https://images.datumstudio.xyz/workshop-wide.jpeg",
+  defaultImage: "https://images.datumstudio.xyz/workshop-wide.avif?v=20260730",
   logo: "https://images.datumstudio.xyz/logo.avif",
   social: {
     bluesky: "https://bsky.app/profile/datumstudio.xyz",
