@@ -55,7 +55,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .button:hover span { transform: translate(3px, -3px); }
 .button-primary { background: var(--moss); color: white; }
 .button-primary:hover { background: var(--moss-dark); }
-.text-link { font-weight: 650; font-size: 14px; border-bottom: 1px solid var(--ink); padding: 12px 0 7px; }
+.text-link { display: inline-flex; align-items: center; white-space: nowrap; font-weight: 650; font-size: 14px; border-bottom: 1px solid var(--ink); padding: 12px 0 7px; }
 .text-link span { margin-left: 10px; }
 .location { margin: auto 0 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 12px; }
 .location span { width: 9px; height: 9px; background: var(--moss); }
@@ -74,7 +74,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .story-copy { max-width: 730px; padding-top: 33px; }
 .story-copy p { font-size: clamp(17px, 1.55vw, 22px); line-height: 1.72; color: var(--muted); margin: 0 0 1.55em; }
 .story-copy .story-close { color: var(--ink); font-weight: 600; }
-.manifesto { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; border-bottom: 1px solid var(--line); }
+.manifesto { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; border-bottom: 1px solid var(--line); background-color: var(--paper); background-image: linear-gradient(rgba(238, 234, 225, .88), rgba(238, 234, 225, .88)), url("https://images.datumstudio.xyz/workshop-floor.avif?v=20260730"); background-position: center; background-size: cover; }
 .manifesto-copy { max-width: 1070px; margin: 0; font-family: var(--font-plex), "IBM Plex Sans", Arial, sans-serif; font-size: clamp(40px, 4.8vw, 74px); font-weight: 520; font-variation-settings: "wdth" 96; line-height: 1.08; letter-spacing: -.035em; }
 .manifesto-copy em { color: var(--moss); font-style: normal; }
 .services { display: grid; grid-template-columns: .85fr 1.5fr; gap: clamp(50px, 7vw, 120px); background: var(--paper); }
@@ -472,8 +472,10 @@ footer .footer-links > a { border-bottom: 1px solid #ffffff55; padding-bottom: 3
   .technical-frame { background: #2a2a25; }
   .technical-frame figcaption { background: var(--paper-light); color: var(--ink); }
   textarea:focus { box-shadow: 0 0 0 2px rgba(63, 74, 61, 0.25); }
-  .button-primary { color: var(--paper-light); }
+  .button-primary { color: var(--ink-dark); }
   .nav-contact:hover { color: var(--paper-light); background: var(--ink); }
+  .eyebrow, .section-kicker { color: #d2ddc4; }
+  .manifesto { background-image: linear-gradient(rgba(26, 26, 24, .88), rgba(26, 26, 24, .88)), url("https://images.datumstudio.xyz/workshop-floor.avif?v=20260730"); }
   /* Keep the footer a dark surface so its light type remains readable. */
   footer { background: var(--paper-dark); color: var(--ink-dark); }
   footer p { color: var(--muted-dark); }
