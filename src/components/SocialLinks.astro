@@ -1,0 +1,72 @@
+---
+interface SocialLink {
+  label: string;
+  href: string;
+  icon?: "bluesky" | "rss";
+  rel?: string;
+  type?: string;
+}
+
+interface Props {
+  links: SocialLink[];
+  label?: string;
+}
+
+const { links, label = "Social links" } = Astro.props;
+---
+
+{links.length > 0 && (
+  <nav class="social-links" aria-label={label}>
+    {links.map(({ label: linkLabel, href, icon, rel = "me", type }, index) => {
+      const popoverId = `social-popover-${index}`;
+      const anchorName = `--social-icon-${index}`;
+      return (
+      <span class="social-link">
+        <a class="social-icon-button" style={`anchor-name: ${anchorName}`} href={href} rel={rel} type={type} aria-label={linkLabel} aria-describedby={popoverId} data-social-trigger={popoverId}>
+        {icon === "bluesky" && (
+          <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 10.8C9.9 7.3 7.5 4.8 4.7 4.5c-.2 2.9 1 5 3.6 6.3-2-.2-3.4.4-3.4 1.8 0 1.5 1.9 2.1 3.9 1.4 1.2-.4 2.3-1.1 3.2-2.1Z" />
+            <path d="M12 10.8c2.1-3.5 4.5-6 7.3-6.3.2 2.9-1 5-3.6 6.3 2-.2 3.4.4 3.4 1.8 0 1.5-1.9 2.1-3.9 1.4-1.2-.4-2.3-1.1-3.2-2.1Z" />
+          </svg>
+        )}
+        {icon === "rss" && (
+          <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="5" cy="19" r="1.5" />
+            <path d="M4 11a9 9 0 0 1 9 9M4 5a15 15 0 0 1 15 15" />
+          </svg>
+        )}
+        </a>
+        <span id={popoverId} popover="hint" class="social-popover" style={`position-anchor: ${anchorName}`}>
+          {linkLabel}
+        </span>
+      </span>
+      );
+    })}
+  </nav>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-social-trigger]").forEach((trigger) => {
+    const popoverId = trigger.dataset.socialTrigger;
+    const popover = popoverId ? document.getElementById(popoverId) : null;
+    if (!popover || !("showPopover" in popover)) return;
+
+    let hideTimer: number | undefined;
+    const show = () => {
+      window.clearTimeout(hideTimer);
+      if (!popover.matches(":popover-open")) popover.showPopover();
+    };
+    const hide = () => {
+      hideTimer = window.setTimeout(() => {
+        if (popover.matches(":popover-open")) popover.hidePopover();
+      }, 120);
+    };
+
+    trigger.addEventListener("mouseenter", show);
+    trigger.addEventListener("mouseleave", hide);
+    trigger.addEventListener("focus", show);
+    trigger.addEventListener("blur", hide);
+    popover.addEventListener("mouseenter", show);
+    popover.addEventListener("mouseleave", hide);
+  });
+</script>

@@ -14,6 +14,11 @@ export const site = {
   },
 } as const;
 
+export const socialLinks = [
+  { label: "Bluesky", href: site.social.bluesky, icon: "bluesky" as const },
+  { label: "RSS", href: site.social.rss, icon: "rss" as const, rel: "alternate", type: "application/rss+xml" },
+] as const;
+
 export const conversationCopy = {
   title: "What would make life work better?",
   body: "Tell us about the space, routine, object, or stubborn problem. Early ideas are welcome; you do not need a finished brief.",

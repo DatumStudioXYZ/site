@@ -2,7 +2,8 @@
 import "@fontsource-variable/ibm-plex-sans/wdth.css";
 import { ClientRouter } from "astro:transitions";
 import Wordmark from "../components/Wordmark.astro";
-import { site } from "../data/site";
+import SocialLinks from "../components/SocialLinks.astro";
+import { site, socialLinks } from "../data/site";
 import "../styles/global.css";
 
 interface Props {
@@ -140,12 +141,15 @@ const allJsonLd = [...defaultJsonLd, ...jsonLd];
       <slot />
 
       <footer>
-        <a class="wordmark footer-mark" href="/"><Wordmark inverted /></a>
-        <p>{site.tagline}</p>
-        <a href={site.social.bluesky} rel="me">Bluesky</a>
-        <a href={site.social.rss} rel="alternate" type="application/rss+xml">RSS</a>
-        <a href="/#contact">Start a conversation</a>
-        <p>&copy; {year} Datum Studio</p>
+        <div class="footer-grid">
+          <a class="wordmark footer-mark" href="/"><Wordmark inverted /></a>
+          <div class="footer-links">
+            <SocialLinks links={socialLinks} />
+            <a href="/#contact">Start a conversation</a>
+          </div>
+          <p>{site.tagline}</p>
+          <p class="footer-copyright">&copy; {year} Datum Studio</p>
+        </div>
       </footer>
     </main>
 

@@ -142,10 +142,20 @@ textarea:focus { border-color: var(--moss); box-shadow: 0 0 0 2px #3e513322; }
 .form-note { color: var(--muted); font-size: 12px; line-height: 1.5; margin: -12px 0 0; }
 .cf-turnstile { margin: -8px 0 0; }
 
-footer { padding: 42px clamp(24px, 4vw, 64px); display: grid; grid-template-columns: 1.4fr 1fr auto auto auto; gap: 35px; align-items: center; background: var(--ink); color: var(--paper-light); font-size: 12px; }
+footer { padding: 42px clamp(24px, 4vw, 64px); background: var(--ink); color: var(--paper-light); font-size: 12px; }
+.footer-grid { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 42px 48px; align-items: end; }
 .footer-mark { font-size: 12px; }
 footer p { margin: 0; color: #d2d0c8; }
-footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 3px; }
+footer .footer-links > a { border-bottom: 1px solid #ffffff55; padding-bottom: 3px; }
+.footer-links { display: flex; align-items: center; justify-content: flex-end; gap: 35px; }
+.footer-copyright { text-align: right; }
+.social-links { display: flex; align-items: center; gap: 35px; }
+.social-link { position: relative; display: inline-flex; }
+.social-icon-button { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; }
+.social-icon { width: 16px; height: 16px; fill: currentColor; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.social-link:first-child .social-icon { stroke: none; }
+.social-popover { inset: auto; position-area: top; margin: 0 0 8px; padding: 9px 12px; border: 1px solid currentColor; background: var(--paper-dark); color: var(--ink-dark); font-size: 12px; white-space: nowrap; box-shadow: 0 8px 24px rgba(0, 0, 0, .18); }
+.social-popover::backdrop { background: transparent; }
 
 /* Shared page patterns */
 .page-hero { background: var(--paper); border-bottom: 1px solid var(--line); }
@@ -467,7 +477,7 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
   /* Keep the footer a dark surface so its light type remains readable. */
   footer { background: var(--paper-dark); color: var(--ink-dark); }
   footer p { color: var(--muted-dark); }
-  footer > a:not(.wordmark) { border-bottom-color: #ffffff88; }
+  footer .footer-links > a { border-bottom-color: #ffffff88; }
   /* The inverted footer markup selects the dark logo asset in dark mode;
      invert it back to a light mark for the dark footer surface. */
   footer .footer-mark .wordmark-img { filter: invert(1); }
@@ -526,7 +536,10 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
   .service-detail-header, .process-step-header { grid-template-columns: 42px 1fr; }
   .service-detail-header p, .process-step-header p { grid-column: 2; }
   .service-detail-body, .process-step-body { grid-template-columns: 1fr; }
-  footer { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; grid-template-rows: auto; gap: 28px; align-items: start; }
+  .footer-links { justify-content: flex-start; flex-wrap: wrap; gap: 24px; }
+  .footer-copyright { text-align: left; }
+  .social-links { gap: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
