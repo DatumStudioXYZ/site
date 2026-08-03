@@ -20,7 +20,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper-light) 92%, transparent);
+  /* Keep navigation readable over every page section while scrolling. */
+  background: var(--paper-light);
   backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
@@ -35,6 +36,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .nav-contact { border: 1px solid var(--ink); padding: 13px 19px; transition: .2s ease; }
 .nav-contact:hover { color: var(--paper-light); background: var(--ink); }
 .menu-button { display: none; border: 0; background: transparent; color: var(--ink); font-weight: 650; }
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--walnut);
+  outline-offset: 4px;
+}
 
 .hero { min-height: calc(100vh - 82px); display: grid; grid-template-columns: minmax(380px, 43%) 1fr; background: var(--paper); border-bottom: 1px solid var(--line); }
 .hero-copy { padding: clamp(60px, 8vh, 110px) clamp(28px, 4.2vw, 72px) 42px; display: flex; flex-direction: column; align-items: flex-start; }
@@ -458,6 +464,13 @@ footer > a:not(.wordmark) { border-bottom: 1px solid #ffffff55; padding-bottom: 
   textarea:focus { box-shadow: 0 0 0 2px rgba(63, 74, 61, 0.25); }
   .button-primary { color: var(--paper-light); }
   .nav-contact:hover { color: var(--paper-light); background: var(--ink); }
+  /* Keep the footer a dark surface so its light type remains readable. */
+  footer { background: var(--paper-dark); color: var(--ink-dark); }
+  footer p { color: var(--muted-dark); }
+  footer > a:not(.wordmark) { border-bottom-color: #ffffff88; }
+  /* The inverted footer markup selects the dark logo asset in dark mode;
+     invert it back to a light mark for the dark footer surface. */
+  footer .footer-mark .wordmark-img { filter: invert(1); }
 }
 
 @media (max-width: 1050px) {
