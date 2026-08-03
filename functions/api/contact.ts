@@ -4,6 +4,12 @@ interface Env {
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
+  const wantsJson = context.request.headers.get("Accept")?.includes("application/json") ?? false;
+  const response = (body: Record<string, unknown>, status = 200) =>
+    wantsJson
+      ? Response.json(body, { status })
+      : Response.redirect(new URL("/thank-you/", context.request.url), status === 200 ? 303 : 400);
+
   try {
     const formData = await context.request.formData();
     const name = formData.get("name") as string;
@@ -17,11 +23,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     if (!name || !email || !message) {
-      return Response.json({ ok: false, error: "Missing required fields" }, { status: 400 });
+      return response({ ok: false, error: "Please complete the required fields." }, 400);
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return Response.json({ ok: false, error: "Invalid email" }, { status: 400 });
+      return response({ ok: false, error: "Please enter a valid email address." }, 400);
     }
 
     const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
@@ -36,7 +42,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const turnstileResult = (await turnstileRes.json()) as { success: boolean };
     if (!turnstileResult.success) {
-      return Response.json({ ok: false, error: "Verification failed" }, { status: 403 });
+      return response({ ok: false, error: "Verification failed. Please try again." }, 403);
     }
 
     const key = `submission:${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
@@ -53,9 +59,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       { expirationTtl: 7776000 },
     );
 
-    return Response.json({ ok: true });
+    return response({ ok: true });
   } catch (error) {
     console.error("Contact form error:", error);
-    return Response.json({ ok: false, error: "Internal server error" }, { status: 500 });
+    return response({ ok: false, error: "Internal server error" }, 500);
   }
 };

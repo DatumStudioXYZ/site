@@ -1,4 +1,4 @@
-<form class="contact-form">
+<form class="contact-form" action="/api/contact" method="post" novalidate>
   <div class="field-row">
     <label><span>Name</span><input name="name" type="text" autocomplete="name" required placeholder="Your name" /></label>
     <label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
@@ -7,25 +7,52 @@
   <label><span>Tell us what is not working</span><textarea name="message" required rows="5" placeholder="A few sentences is plenty…"></textarea></label>
   <div class="cf-turnstile" data-sitekey="0x4AAAAAAD4t1xClM1TPKrEM"></div>
   <button class="button button-primary submit" type="submit">Send message <span>↗</span></button>
-  <p class="form-note" aria-live="polite">We typically respond within 2 business days.</p>
+  <p class="form-note" aria-live="polite" data-default-note="We typically respond within 2 business days.">We typically respond within 2 business days.</p>
 </form>
 <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
   const form = document.querySelector<HTMLFormElement>(".contact-form");
   const button = form?.querySelector<HTMLButtonElement>("button[type='submit']");
   const note = form?.querySelector<HTMLElement>(".form-note");
+  const fields = form ? Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]")) : [];
+
+  const setState = (message: string, state: "idle" | "error" | "sending" | "success") => {
+    if (note) note.textContent = message;
+    if (form) form.dataset.state = state;
+  };
+
+  const validate = () => {
+    const invalid = fields.find((field) => !field.checkValidity());
+    fields.forEach((field) => field.removeAttribute("aria-invalid"));
+    if (!invalid) return true;
+    invalid.setAttribute("aria-invalid", "true");
+    invalid.reportValidity();
+    setState("Please check the highlighted field and try again.", "error");
+    return false;
+  };
+
+  fields.forEach((field) => field.addEventListener("input", () => {
+    field.removeAttribute("aria-invalid");
+    if (form?.dataset.state === "error") setState(note?.dataset.defaultNote || "", "idle");
+  }));
+
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!validate()) return;
     const data = new FormData(form);
     if (data.get("website")) return;
     if (button) { button.disabled = true; button.innerHTML = "Sending… <span>↻</span>"; }
+    setState("Sending your message…", "sending");
     try {
-      const response = await fetch("/api/contact", { method: "POST", body: data });
+      const response = await fetch(form.action, { method: form.method, body: data, headers: { Accept: "application/json" } });
       const result = await response.json() as { ok?: boolean; error?: string };
-      if (result.ok) window.location.href = "/thank-you";
+      if (result.ok) {
+        setState("Thanks — your message is on its way.", "success");
+        window.location.href = "/thank-you/";
+      }
       else throw new Error(result.error || "Failed to send");
     } catch (error) {
-      if (note) note.textContent = "Something went wrong. Please try again or email us directly at hello@livingsystems.studio.";
+      setState(error instanceof Error ? error.message : "Something went wrong. Please try again.", "error");
       console.error("Contact form error:", error);
     } finally {
       if (button) { button.disabled = false; button.innerHTML = "Send message <span>↗</span>"; }
