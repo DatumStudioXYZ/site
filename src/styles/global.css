@@ -140,6 +140,9 @@ input:focus, select:focus { border-bottom-color: var(--moss); box-shadow: 0 2px 
 textarea:focus { border-color: var(--moss); box-shadow: 0 0 0 2px #3e513322; }
 .submit { align-self: flex-start; border: 0; }
 .form-note { color: var(--muted); font-size: 12px; line-height: 1.5; margin: -12px 0 0; }
+.form-success { padding: 28px; border: 1px solid var(--line); background: var(--paper); }
+.form-success h3 { margin: 18px 0 10px; font-size: clamp(28px, 3vw, 40px); line-height: 1.05; }
+.form-success p:last-child { color: var(--muted); margin: 0; line-height: 1.6; }
 .cf-turnstile { margin: -8px 0 0; }
 
 footer { padding: 42px clamp(24px, 4vw, 64px); background: var(--ink); color: var(--paper-light); font-size: 12px; }
