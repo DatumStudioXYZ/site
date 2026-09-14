@@ -18,6 +18,8 @@
   /* ---- Accent ---- */
   --moss: #3f4a3d;
   --moss-dark: #252c25;
+  --button-primary-text: #ffffff;
+  --nav-current: var(--moss);
   /* Darkened for readable small labels and numerals on warm paper. */
   --walnut: #8b3f2b;
 
@@ -50,5 +52,6 @@
     --selection: var(--selection-dark);
     --shadow-photo: var(--shadow-photo-dark);
     --shadow-photo-hover: var(--shadow-photo-hover-dark);
+    --nav-current: #d2ddc4;
   }
 }

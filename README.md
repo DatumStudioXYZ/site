@@ -1,6 +1,6 @@
 # Datum Studio
 
-A static Astro brochure site for Datum Studio.
+An Astro brochure site for Datum Studio. Rendering is static; the contact form is handled by a Cloudflare Pages Function with Turnstile verification and KV storage.
 
 ## Local development
 
@@ -20,17 +20,17 @@ For the faster Astro-only server without Cloudflare bindings, run
 npm run build
 ```
 
-Astro writes the deployable static site to `dist/`. There is no server runtime, React, database, or API dependency.
+Astro writes the deployable static site to `dist/`. Run `npm run verify` before release to type-check, build, and validate generated internal links. Publishing has separate, opt-in dependencies and is never part of this build.
 
 ## Cloudflare Pages
 
 Connect this repository in Cloudflare Pages and use:
 
-- Build command: `npm run build`
+- Build command: `npm run verify`
 - Build output directory: `dist`
 - Node.js version: 22
 
-The contact form submits to a Cloudflare Pages Function that stores submissions in KV. Set `TURNSTILE_SECRET` as an encrypted secret in the Cloudflare dashboard. Update `TURNSTILE_SITE_KEY` in `wrangler.jsonc` after creating the Turnstile widget.
+The contact form submits to a Cloudflare Pages Function that stores submissions in KV. Set `TURNSTILE_SECRET` as an encrypted secret and `TURNSTILE_HOSTNAMES` as a deployment-specific variable in the Cloudflare dashboard. The hostnames value must include only the public hosts allowed by that environment. Update `TURNSTILE_SITE_KEY` in `wrangler.jsonc` after creating the Turnstile widget.
 
 ## Secrets and configuration
 
@@ -39,6 +39,7 @@ The site keeps a committed example at `.env.example`. Local plaintext secrets sh
 Current runtime secret:
 
 - `TURNSTILE_SECRET` — Cloudflare Turnstile secret key for contact form verification. Store this as an encrypted Cloudflare Pages secret.
+- `TURNSTILE_HOSTNAMES` — comma-separated public hosts accepted by the contact widget; configure this separately for production and preview.
 
 Public or non-secret configuration:
 

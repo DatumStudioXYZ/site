@@ -3,22 +3,34 @@ import Layout from "../../layouts/Layout.astro";
 import PageHero from "../../components/PageHero.astro";
 import CallToAction from "../../components/CallToAction.astro";
 import { services } from "../../data/services";
+import { site } from "../../data/site";
 import { breadcrumbs } from "../../lib/structured-data";
 ---
 <Layout
   title="Services — Datum Studio"
-  description="Datum offers four integrated services: Work Better, Live Better, Build Better, and Think Better. Architecture, craft, and technology for spaces that work beautifully."
+  description="Commission Datum for workspace design, home organisation, custom pieces, or systems planning. Start with a conversation to define the scope of your project."
   canonical="/services/"
   jsonLd={[{
     "@context": "https://schema.org", "@type": "CollectionPage", name: "Datum Studio Services",
     url: "https://datumstudio.xyz/services/",
-    description: "Four integrated services for thoughtful spaces: Work Better, Live Better, Build Better, Think Better.",
+    description: "Commissions for workspace design, home organisation, custom pieces, and systems planning. Each project starts with a conversation to define its scope.",
     mainEntity: { "@type": "ItemList", itemListElement: services.map((service) => ({ "@type": "ListItem", name: service.title, description: service.tagline })) },
   }, breadcrumbs([{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }])]}
 >
-  <PageHero kicker="What we do" title="Defined by outcomes, not trades." intro="One studio thinking across the room, the object, and the technology inside it." />
+  <PageHero kicker="What we do" title="Defined by outcomes, not trades." intro="Open for commissions, from a workspace that needs a better layout to a custom piece or a clearer plan for the whole project." />
+  <section class="service-detail section-pad">
+    <div class="service-detail-header">
+      <h2>Start with the problem.</h2>
+      <p class="service-detail-tagline">You do not need a finished brief to get in touch.</p>
+    </div>
+    <div class="service-detail-body">
+      <div class="service-detail-description"><p class="service-detail-lead">Tell us about the space or routine, what is getting in the way, and what you hope to change. Include your location and any timing or budget you have in mind.</p></div>
+      <div class="service-detail-approach"><p>The first conversation helps identify what the project needs: a layout, a custom piece, a storage system, or a plan for work in stages. Each commission is scoped and priced individually. Deliverables, fees, and timing are agreed for your project.</p></div>
+      <div class="service-detail-includes"><p>Projects in {site.serviceArea.join(", ")}, and remote enquiries are welcome. We’ll discuss whether the work calls for a site visit or can be handled remotely.</p></div>
+    </div>
+  </section>
   {services.map((service) => (
-    <section class="service-detail section-pad">
+    <section id={service.slug} class="service-detail section-pad">
       <div class="service-detail-header">
         <span class="service-detail-number">{service.number}</span><h2>{service.title}</h2><p class="service-detail-tagline">{service.tagline}</p>
       </div>
@@ -29,5 +41,5 @@ import { breadcrumbs } from "../../lib/structured-data";
       </div>
     </section>
   ))}
-  <CallToAction kicker="Not sure where to start?" title="Let's figure it out together." />
+  <CallToAction />
 </Layout>

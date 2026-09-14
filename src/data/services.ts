@@ -1,6 +1,7 @@
 export const services = [
   {
     number: "01",
+    slug: "work-better",
     title: "Work Better",
     tagline: "Home offices, studios, and workshops designed around focus, flow, and the tools you actually use.",
     description: "Your workspace should disappear into the work. We design rooms where every tool has a home, every surface earns its place, and the environment supports concentration instead of fighting it.",
@@ -9,6 +10,7 @@ export const services = [
   },
   {
     number: "02",
+    slug: "live-better",
     title: "Live Better",
     tagline: "Storage, kitchens, mudrooms, and living spaces that remove friction from everyday routines.",
     description: "The best homes don't announce their design. They simply feel easy. We study the routines that fill your day — the morning rush, the evening wind-down, the seasonal rotations — and design spaces that support them without friction.",
@@ -17,6 +19,7 @@ export const services = [
   },
   {
     number: "03",
+    slug: "build-better",
     title: "Build Better",
     tagline: "Custom millwork, built-ins, and furniture made with honest materials and a long working life.",
     description: "We design and build things that are meant to stay. Built-in shelving that fits the room exactly. A desk shaped to the way you work. Cabinets that will still look right in thirty years.",
@@ -25,6 +28,7 @@ export const services = [
   },
   {
     number: "04",
+    slug: "think-better",
     title: "Think Better",
     tagline: "Planning, automation, workflow, and systems consulting that makes the whole project clearer.",
     description: "Sometimes the most valuable thing is clarity before construction. We help you think through the problem — what matters, what doesn't, what should come first — before a single piece of material is cut.",

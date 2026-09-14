@@ -1,71 +1,112 @@
-<form class="contact-form" action="/api/contact" method="post" novalidate>
+<form class="contact-form" action="/api/contact" method="post">
   <div class="form-fields">
     <div class="field-row">
-      <label><span>Name</span><input name="name" type="text" autocomplete="name" required placeholder="Your name" /></label>
-      <label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
+      <label><span>Name</span><input name="name" type="text" autocomplete="name" required maxlength="200" placeholder="Your name" /></label>
+      <label><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" /></label>
     </div>
     <div aria-hidden="true" class="honeypot"><label>Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-    <label><span>Tell us what is not working</span><textarea name="message" required rows="5" placeholder="A few sentences is plenty…"></textarea></label>
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAAD4t1xClM1TPKrEM"></div>
+    <label><span>Tell us what is not working</span><textarea name="message" required maxlength="10000" rows="5" placeholder="A few sentences is plenty…"></textarea></label>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAD4t1xClM1TPKrEM" data-action="contact"></div>
     <button class="button button-primary submit" type="submit">Send message <span>↗</span></button>
-    <p class="form-note" aria-live="polite" data-default-note="We typically respond within 2 business days.">We typically respond within 2 business days.</p>
+    <p class="form-note" aria-live="polite" data-default-note="Complete the form and verification to send your message.">Complete the form and verification to send your message.</p>
+    <p class="form-note">Your name, email address, and message are stored for up to 90 days so Datum can review your inquiry.</p>
   </div>
   <div class="form-success" hidden>
     <p class="section-kicker">Message received</p>
-    <h3>Thanks for reaching out.</h3>
-    <p>We’ll be in touch within 2 business days.</p>
+    <h3 tabindex="-1">Thanks for reaching out.</h3>
+    <p>Your message was received and saved.</p>
   </div>
 </form>
-<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<noscript><p class="form-note">JavaScript is required to complete the verification challenge. A verified email fallback will be added once its monitored mailbox is confirmed.</p></noscript>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script>
-  const form = document.querySelector<HTMLFormElement>(".contact-form");
-  const button = form?.querySelector<HTMLButtonElement>("button[type='submit']");
-  const note = form?.querySelector<HTMLElement>(".form-note");
-  const fieldsContainer = form?.querySelector<HTMLElement>(".form-fields");
-  const success = form?.querySelector<HTMLElement>(".form-success");
-  const fields = form ? Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]")) : [];
-
-  const setState = (message: string, state: "idle" | "error" | "sending" | "success") => {
-    if (note) note.textContent = message;
-    if (form) form.dataset.state = state;
+  type TurnstileApi = {
+    render: (container: HTMLElement, options: { sitekey: string; action: string }) => string;
+    reset: (widgetId: string) => void;
   };
+  type ContactResult = { ok?: boolean; error?: string };
+  const turnstileWindow = window as Window & { turnstile?: TurnstileApi };
 
-  const validate = () => {
-    const invalid = fields.find((field) => !field.checkValidity());
-    fields.forEach((field) => field.removeAttribute("aria-invalid"));
-    if (!invalid) return true;
-    invalid.setAttribute("aria-invalid", "true");
-    invalid.reportValidity();
-    setState("Please check the highlighted field and try again.", "error");
-    return false;
-  };
-
-  fields.forEach((field) => field.addEventListener("input", () => {
-    field.removeAttribute("aria-invalid");
-    if (form?.dataset.state === "error") setState(note?.dataset.defaultNote || "", "idle");
-  }));
-
-  form?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (!validate()) return;
-    const data = new FormData(form);
-    if (data.get("website")) return;
-    if (button) { button.disabled = true; button.innerHTML = "Sending… <span>↻</span>"; }
-    setState("Sending your message…", "sending");
-    try {
-      const response = await fetch(form.action, { method: form.method, body: data, headers: { Accept: "application/json" } });
-      const result = await response.json() as { ok?: boolean; error?: string };
-      if (result.ok) {
-        setState("Thanks — your message is on its way.", "success");
+  const setupContactForm = () => {
+    const form = document.querySelector<HTMLFormElement>(".contact-form");
+    if (!form || form.dataset.enhanced === "true") return;
+    form.dataset.enhanced = "true";
+    form.noValidate = true;
+    const button = form.querySelector<HTMLButtonElement>("button[type='submit']");
+    const note = form.querySelector<HTMLElement>(".form-note");
+    const fieldsContainer = form.querySelector<HTMLElement>(".form-fields");
+    const success = form.querySelector<HTMLElement>(".form-success");
+    const successHeading = success?.querySelector<HTMLElement>("h3");
+    const turnstileContainer = form.querySelector<HTMLElement>(".cf-turnstile");
+    const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]"));
+    let widgetId: string | undefined;
+    let renderAttempts = 0;
+    const renderChallenge = () => {
+      if (!turnstileContainer || !document.contains(turnstileContainer)) return;
+      if (turnstileWindow.turnstile) {
+        widgetId = turnstileWindow.turnstile.render(turnstileContainer, {
+          sitekey: turnstileContainer.dataset.sitekey || "",
+          action: turnstileContainer.dataset.action || "contact",
+        });
+      } else if (renderAttempts++ < 100) {
+        window.setTimeout(renderChallenge, 50);
+      }
+    };
+    renderChallenge();
+    const setState = (message: string, state: "idle" | "error" | "sending" | "success") => {
+      if (note) note.textContent = message;
+      form.dataset.state = state;
+    };
+    const validate = () => {
+      const invalid = fields.find((field) => !field.checkValidity());
+      fields.forEach((field) => field.removeAttribute("aria-invalid"));
+      if (!invalid) return true;
+      invalid.setAttribute("aria-invalid", "true");
+      invalid.reportValidity();
+      setState("Please check the highlighted field and try again.", "error");
+      return false;
+    };
+    fields.forEach((field) => field.addEventListener("input", () => {
+      field.removeAttribute("aria-invalid");
+      if (form.dataset.state === "error") setState(note?.dataset.defaultNote || "", "idle");
+    }));
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validate()) return;
+      const data = new FormData(form);
+      if (data.get("website")) return;
+      if (!data.get("cf-turnstile-response")) {
+        setState("Please complete the verification challenge before sending your message.", "error");
+        return;
+      }
+      if (button) { button.disabled = true; button.innerHTML = "Sending… <span>↻</span>"; }
+      setState("Sending your message…", "sending");
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15_000);
+      try {
+        const response = await fetch(form.action, { method: form.method, body: data, headers: { Accept: "application/json" }, signal: controller.signal });
+        const contentType = response.headers.get("Content-Type") || "";
+        const result: unknown = contentType.includes("application/json") ? await response.json() : null;
+        if (!response.ok || typeof result !== "object" || result === null || (result as ContactResult).ok !== true) {
+          const error = typeof result === "object" && result !== null ? (result as ContactResult).error : undefined;
+          throw new Error(error || "We could not send your message. Please try again.");
+        }
+        setState("Your message was received and saved.", "success");
         if (fieldsContainer) fieldsContainer.hidden = true;
         if (success) success.hidden = false;
+        successHeading?.focus();
+      } catch (error) {
+        const message = error instanceof DOMException && error.name === "AbortError"
+          ? "We could not confirm receipt. Please wait a moment before trying again."
+          : error instanceof Error ? error.message : "We could not send your message. Please try again.";
+        setState(message, "error");
+        if (widgetId) turnstileWindow.turnstile?.reset(widgetId);
+      } finally {
+        window.clearTimeout(timeout);
+        if (button) { button.disabled = false; button.innerHTML = "Send message <span>↗</span>"; }
       }
-      else throw new Error(result.error || "Failed to send");
-    } catch (error) {
-      setState(error instanceof Error ? error.message : "Something went wrong. Please try again.", "error");
-      console.error("Contact form error:", error);
-    } finally {
-      if (button) { button.disabled = false; button.innerHTML = "Send message <span>↗</span>"; }
-    }
-  });
+    });
+  };
+  setupContactForm();
+  document.addEventListener("astro:page-load", setupContactForm);
 </script>

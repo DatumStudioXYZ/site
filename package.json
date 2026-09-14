@@ -23,6 +23,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "check:links": "node scripts/check-site-links.mjs",
+    "test:links": "node scripts/check-site-links.test.mjs",
+    "verify": "npm run check && npm run build && npm run check:links && npm run test:links",
     "deploy": "wrangler pages deploy dist",
     "deploy:prod": "wrangler pages deploy dist --branch main",
     "publish:nostr": "node --experimental-strip-types scripts/publish-nostr.ts",
@@ -55,6 +58,7 @@
     "@cloudflare/workers-types": "^5.20260718.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.4",
+    "parse5": "^8.0.1",
     "typescript": "6.0.3",
     "wrangler": "^4.112.0"
   }

@@ -1,0 +1,109 @@
+---
+title: "WLED, Thread, and the Right Remote"
+description: "WLED makes beautiful, responsive lighting possible. Thread can make the controls quieter and more dependable — but the two technologies do different jobs."
+pubDate: 2026-08-26
+tags: ["lighting", "wled", "thread", "smart-home", "technology"]
+author: gavin
+draft: true
+---
+
+# WLED, Thread, and the Right Remote
+
+The best lighting control is the one nobody has to explain.
+
+You walk into the workshop and the lights come on at a useful level. You press a button beside the door and the room changes from work mode to evening mode. Someone else can still use the physical switch without opening an app or learning how the system is assembled.
+
+That is the experience worth designing.
+
+WLED is a good way to build the lighting itself. It can control addressable LED strips, remember presets, run effects, and expose a simple network interface for automation. Thread is a good way to connect small, low-power devices such as buttons, motion sensors, and remotes.
+
+They are complementary. They are not interchangeable.
+
+## What WLED is
+
+WLED is firmware for microcontrollers that drive addressable LEDs. A typical installation has three parts: an LED strip, a controller such as an ESP32, and a power supply sized for the strip.
+
+The controller normally joins the home Wi-Fi network. From there, WLED can be controlled through its web interface, the JSON API, HTTP calls, MQTT, or an integration in a home-automation platform.
+
+That makes WLED unusually flexible. The light does not have to belong to a proprietary ecosystem. A scene can be triggered by a switch, a schedule, a sensor, a local automation, or another program on the network.
+
+There is an important practical detail, though: a WLED controller is generally a Wi-Fi device. Installing WLED does not automatically put the LEDs on Thread.
+
+## What Thread is
+
+Thread is a low-power IPv6 mesh network designed for small devices. It is well suited to a battery-powered button that sends a short command, or a sensor that reports a change every few minutes. It is not intended to carry a fast stream of colour data to an LED strip.
+
+Thread also does not define what a button means. It provides the network; another application protocol, such as Matter, provides the device behaviour and control model.
+
+To reach a Thread device from the rest of the home network, you need a Thread Border Router. That router connects the Thread mesh to Wi-Fi or Ethernet. It may be a separate device, or a function built into equipment you already own, such as a smart speaker, home hub, or router.
+
+The Border Router is not necessarily a hub in the old, proprietary sense. Its job is to route packets. The automation platform still needs to understand the button or sensor and decide what to do with it.
+
+## How the two work together
+
+The cleanest arrangement looks like this:
+
+```text
+Thread button or sensor
+          ↓
+Thread Border Router
+          ↓
+Home-automation platform
+          ↓  Wi-Fi / local network
+       WLED controller
+          ↓
+      LED strip
+```
+
+Pressing the button does not send colour data over Thread. It sends an event to the automation system. The automation system then calls WLED and asks it to select a preset, adjust brightness, or change the effect.
+
+For example, one button could cycle between three scenes:
+
+- short press: soft, warm light;
+- double press: bright, neutral work light;
+- long press: turn the strip off.
+
+The button remains simple. WLED remains responsible for lighting. The automation layer joins the two without forcing either device to do a job it was not designed for.
+
+## Do you need extra remotes?
+
+No. WLED does not require a dedicated remote. You can control it from its web interface, a phone, an existing smart-home app, a wired switch, or an automation triggered by a sensor.
+
+You also do not need one remote per WLED controller. Multiple controls can address the same light, and one control can operate several WLED installations. The useful question is not “how many remotes does WLED need?” but “which controls should exist in this room?”
+
+There are, however, a few pieces that may be required depending on the design:
+
+- A Thread remote requires a Thread Border Router.
+- A Matter-over-Thread remote requires a Matter controller or compatible automation platform as well.
+- A Wi-Fi remote can talk to WLED without Thread, but it usually uses more power and depends on Wi-Fi coverage.
+- A completely local, dependable button may need a wired input or a small dedicated controller instead of another cloud-connected accessory.
+
+If you already have a compatible Thread Border Router and an automation platform, adding a Thread button may be all that is needed. If you have neither, buying a Thread remote alone will not complete the system.
+
+## The design trade-off
+
+Thread is attractive for remotes because a button can be small, battery-powered, and placed where wiring would be awkward. The mesh can also give a device more than one route back to the network.
+
+But every wireless layer adds a dependency. The button has to join the right Thread network. The Border Router has to be available. The automation platform has to recognise the event. The WLED controller has to be reachable over Wi-Fi. A failure in any one of those links can make a simple light feel complicated.
+
+For a frequently used switch, a wired control is still hard to beat. It has no battery, no pairing process, and no radio coverage problem. Thread earns its place when the flexibility of placement matters more than absolute simplicity — for example, a temporary workbench control, a bedside button, or a sensor-driven scene that should not require a wall switch at all.
+
+## A sensible architecture
+
+Keep the layers replaceable.
+
+Let WLED handle the strip and its presets. Keep the automation rules in a platform that can be moved or rewritten. Use Thread for the low-power controls that benefit from it. Put the Border Router somewhere central and make sure there is a clear recovery path: a physical switch, a local WLED interface, or a basic fallback preset.
+
+Do not bury the system behind a single remote or a cloud service. A person should still be able to turn the light on when the internet is unavailable, the phone is in another room, or the person who installed it is away.
+
+The goal is not to build the most connected light. It is to build a light that responds naturally to the room.
+
+WLED can provide the expressive part: colour, brightness, and atmosphere. Thread can provide quiet, low-power controls. A Border Router and an automation layer may connect them. Extra remotes are optional.
+
+The right design is the smallest system that gives the room the behaviour it needs — and no more.
+
+## Further reading
+
+- [WLED documentation](https://kno.wled.ge/)
+- [Thread Group: What is Thread?](https://threadgroup.org/What-is-Thread)
+- [Home Assistant: Thread integration](https://www.home-assistant.io/integrations/thread/)

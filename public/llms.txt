@@ -2,6 +2,8 @@
 
 > Datum is a design studio working across architecture, craftsmanship, technology, and systems thinking. We create thoughtful spaces, objects, and systems around the way people actually live.
 
+Datum is open for commissions. Each project starts with a conversation about the space, problem, and scope, and is priced individually. Gavin’s home renovation is an ongoing personal project undertaken when time allows, alongside commissions.
+
 Datum finds the reference point — the datum — from which every design decision is measured. When the reference point is right, every component fits. Every detail supports the whole.
 
 ## Location
@@ -35,14 +37,12 @@ Thoughts on design, craft, and building better spaces.
 
 ## Projects
 
-Real projects that prove the philosophy.
-
-- /projects/workshop/ — A garage workshop redesigned from the ground up. The first Datum project.
+The workshop is part of Gavin’s own ongoing home renovation. Its progress report is being prepared and is not yet published. Project reports will appear at /projects/.
 
 ## Contact
 
 Start a conversation: /#contact
-Email: hello@livingsystems.studio
+Email: hello@datumstudio.xyz
 
 ## API
 

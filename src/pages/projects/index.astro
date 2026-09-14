@@ -20,7 +20,7 @@ const statusLabel: Record<string, string> = {
 
 <Layout title="Projects — Datum Studio" description="Real projects that prove the philosophy. Workshops, rooms, and systems designed around the way people actually live.">
   <PageHero kicker="Projects" title="Real spaces. Real systems. Real results." />
-  <ContentList kind="projects" empty={sortedProjects.length === 0} emptyMessage="No projects published yet. Check back soon.">
+  <ContentList kind="projects" empty={sortedProjects.length === 0} emptyMessage="The first project is a garage workshop: a study of working floor space, task zones, and storage. A progress report is being prepared; no project reports are published yet.">
     {sortedProjects.map((project: CollectionEntry<"projects">) => (
       <li>
             <a href={`/projects/${project.id}/`} class="project-card">
