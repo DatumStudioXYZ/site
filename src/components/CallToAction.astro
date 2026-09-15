@@ -1,6 +1,9 @@
 ---
-import { conversationCopy } from "../data/site";
+import { getEntry } from "astro:content";
 interface Props { kicker?: string; title?: string; body?: string; href?: string; label?: string; }
+const siteEntry = await getEntry("site", "site");
+if (!siteEntry) throw new Error("Missing site content entry");
+const { conversationCopy } = siteEntry.data;
 const { kicker = conversationCopy.label, title = conversationCopy.title, body = conversationCopy.body, href = "/#contact", label = conversationCopy.label } = Astro.props;
 ---
 <section class="page-cta section-pad">

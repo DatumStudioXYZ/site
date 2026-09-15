@@ -1,9 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import ContactForm from "../components/ContactForm.astro";
 import TechnicalFrame from "../components/TechnicalFrame.astro";
-import { services } from "../data/services";
-import { conversationCopy, site } from "../data/site";
+const siteEntry = await getEntry("site", "site");
+if (!siteEntry) throw new Error("Missing site content entry");
+const { conversationCopy, ...site } = siteEntry.data;
+const serviceEntries: CollectionEntry<"services">[] = await getCollection("services");
+const services = serviceEntries.map((entry: CollectionEntry<"services">) => ({ slug: entry.id, ...entry.data })).sort((a, b) => a.number.localeCompare(b.number));
 ---
 
 <Layout

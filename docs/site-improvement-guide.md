@@ -35,7 +35,7 @@ Status: implementation started. Steps 2, 3's unpublished-draft fallback, 4, 5, a
 - The commission branch deliberately avoids invented fees, fixed packages, availability claims, or testimonials. It gives visitors a truthful first step: share the space or routine, location, timing, and budget so the work can be scoped.
 - Source audit: `src/pages/index.astro`, `src/pages/services/index.astro`, `src/pages/about/index.astro`, `src/data/site.ts`, `src/layouts/Layout.astro`, and `public/llms.txt` agree with the confirmed direction. `src/data/services.ts` remains a catalogue of service areas rather than a claim of fixed packages.
 - Verification: `npm run check` passed with zero errors, warnings, or hints; `npm run build` passed (12 pages). Generated homepage, Services, and About output contains the commission-ready descriptions, calls to action, and structured data. The workshop route remains absent, as intended while its progress report is unpublished.
-- Release remains pending: production deployment/domain provenance and a browser review are still required. Step 5 can now use the commission-ready homepage sequence.
+- Follow-up verification: corrected the Services introduction heading to use its own layout instead of the numbered-service grid, which squeezed the heading into the number column. Type-check, build, and diff checks pass; the local browser confirms the corrected heading and project-specific pricing copy. Production deployment/domain provenance remains pending.
 
 ### 14 September 2026 — Step 5: shorten the homepage and put evidence first
 

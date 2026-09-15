@@ -1,9 +1,9 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, getEntry, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import ContentDetail from "../../components/ContentDetail.astro";
 import Tags from "../../components/Tags.astro";
-import { breadcrumbs, organization } from "../../lib/structured-data";
+import { breadcrumbs } from "../../lib/structured-data";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }: { data: CollectionEntry<"projects">["data"] }) => !data.draft);
@@ -15,6 +15,10 @@ export async function getStaticPaths() {
 }
 
 const { project }: { project: CollectionEntry<"projects"> } = Astro.props;
+const siteEntry = await getEntry("site", "site");
+if (!siteEntry) throw new Error("Missing site content entry");
+const site = siteEntry.data;
+const organization = { "@type": "Organization", name: site.name, url: site.url } as const;
 const { Content } = await render(project);
 
 const heading = project.data.title.replace(/ — Datum Studio$/, "");

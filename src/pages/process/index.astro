@@ -1,9 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PageHero from "../../components/PageHero.astro";
 import CallToAction from "../../components/CallToAction.astro";
-import { processSteps } from "../../data/process";
 import { breadcrumbs } from "../../lib/structured-data";
+const processEntries: CollectionEntry<"process">[] = await getCollection("process");
+const processSteps = processEntries.map((entry: CollectionEntry<"process">) => entry.data).sort((a, b) => a.number.localeCompare(b.number));
 ---
 <Layout
   title="Process — Datum Studio"
@@ -21,7 +23,7 @@ import { breadcrumbs } from "../../lib/structured-data";
       <div class="process-step-header"><span class="process-step-number">{step.number}</span><h2>{step.title}</h2><p class="process-step-summary">{step.summary}</p></div>
       <div class="process-step-body">
         <p class="process-step-lead">{step.description}</p>
-        <div class="process-step-details"><p class="section-kicker">What happens</p><ul>{step.whatHappens.map((item) => <li>{item}</li>)}</ul></div>
+        <div class="process-step-details"><p class="section-kicker">What happens</p><ul>{step.whatHappens.map((item: string) => <li>{item}</li>)}</ul></div>
         <div class="process-step-experience"><p class="section-kicker">How it feels</p><p>{step.clientExperience}</p></div>
       </div>
     </section>

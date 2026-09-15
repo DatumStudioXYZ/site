@@ -22,6 +22,14 @@ npm run build
 
 Astro writes the deployable static site to `dist/`. Run `npm run verify` before release to type-check, build, and validate generated internal links. Publishing has separate, opt-in dependencies and is never part of this build.
 
+## Content validation
+
+All Markdown frontmatter in `src/content/` is validated with the Zod schemas in `src/content.config.ts`. Run the following after editing content to validate its shape without building the site:
+
+```sh
+npm run validate:content
+```
+
 ## Cloudflare Pages
 
 Connect this repository in Cloudflare Pages and use:

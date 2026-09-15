@@ -1,10 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import PageHero from "../../components/PageHero.astro";
 import CallToAction from "../../components/CallToAction.astro";
-import { services } from "../../data/services";
-import { site } from "../../data/site";
 import { breadcrumbs } from "../../lib/structured-data";
+const siteEntry = await getEntry("site", "site");
+if (!siteEntry) throw new Error("Missing site content entry");
+const site = siteEntry.data;
+const serviceEntries: CollectionEntry<"services">[] = await getCollection("services");
+const services = serviceEntries.map((entry: CollectionEntry<"services">) => ({ slug: entry.id, ...entry.data })).sort((a, b) => a.number.localeCompare(b.number));
 ---
 <Layout
   title="Services — Datum Studio"
@@ -19,7 +23,7 @@ import { breadcrumbs } from "../../lib/structured-data";
 >
   <PageHero kicker="What we do" title="Defined by outcomes, not trades." intro="Open for commissions, from a workspace that needs a better layout to a custom piece or a clearer plan for the whole project." />
   <section class="service-detail section-pad">
-    <div class="service-detail-header">
+    <div class="commission-intro-header">
       <h2>Start with the problem.</h2>
       <p class="service-detail-tagline">You do not need a finished brief to get in touch.</p>
     </div>
@@ -37,9 +41,14 @@ import { breadcrumbs } from "../../lib/structured-data";
       <div class="service-detail-body">
         <div class="service-detail-description"><p class="service-detail-lead">{service.description}</p></div>
         <div class="service-detail-approach"><p class="section-kicker">Our approach</p><p>{service.approach}</p></div>
-        <div class="service-detail-includes"><p class="section-kicker">What this includes</p><ul>{service.includes.map((item) => <li>{item}</li>)}</ul></div>
+        <div class="service-detail-includes"><p class="section-kicker">What this includes</p><ul>{service.includes.map((item: string) => <li>{item}</li>)}</ul></div>
       </div>
     </section>
   ))}
   <CallToAction />
 </Layout>
+
+<style>
+  .commission-intro-header { margin-bottom: 48px; }
+  .commission-intro-header h2 { font-size: clamp(36px, 3.6vw, 52px); font-weight: 560; letter-spacing: -.035em; line-height: 1.04; margin: 0 0 20px; }
+</style>

@@ -1,6 +1,5 @@
-import { site } from "../data/site";
-
 export type JsonLd = Record<string, unknown>;
+const siteUrl = "https://datumstudio.xyz";
 
 export function breadcrumbs(items: Array<{ name: string; path: string }>): JsonLd {
   return {
@@ -10,13 +9,7 @@ export function breadcrumbs(items: Array<{ name: string; path: string }>): JsonL
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: new URL(item.path, site.url).href,
+      item: new URL(item.path, siteUrl).href,
     })),
   };
 }
-
-export const organization = {
-  "@type": "Organization",
-  name: site.name,
-  url: site.url,
-} as const;

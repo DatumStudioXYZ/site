@@ -4,7 +4,6 @@ import Layout from "../../layouts/Layout.astro";
 import ContentDetail from "../../components/ContentDetail.astro";
 import Tags from "../../components/Tags.astro";
 import { breadcrumbs } from "../../lib/structured-data";
-import { site } from "../../data/site";
 
 export async function getStaticPaths() {
   const articles = await getCollection("articles", ({ data }: { data: CollectionEntry<"articles">["data"] }) => !data.draft);
@@ -16,6 +15,9 @@ export async function getStaticPaths() {
 }
 
 const { article }: { article: CollectionEntry<"articles"> } = Astro.props;
+const siteEntry = await getEntry("site", "site");
+if (!siteEntry) throw new Error("Missing site content entry");
+const site = siteEntry.data;
 const { Content } = await render(article);
 const author = await getEntry(article.data.author);
 

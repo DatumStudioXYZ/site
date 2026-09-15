@@ -91,4 +91,52 @@ const videos = defineCollection({
   }),
 });
 
-export const collections = { articles, authors, projects, notes, shorts, videos };
+const site = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/site" }),
+  schema: z.object({
+    name: z.string().min(1),
+    url: z.url(),
+    email: z.email(),
+    description: z.string().min(1),
+    tagline: z.string().min(1),
+    serviceArea: z.array(z.string().min(1)).min(1),
+    serviceAreaLabel: z.string().min(1),
+    defaultImage: z.url(),
+    logo: z.url(),
+    social: z.object({ bluesky: z.url(), rss: z.string().startsWith("/") }),
+    socialLinks: z.array(z.object({
+      label: z.string().min(1),
+      href: z.string().min(1),
+      icon: z.enum(["bluesky", "rss"]),
+      rel: z.string().min(1).optional(),
+      type: z.string().min(1).optional(),
+    })).min(1),
+    conversationCopy: z.object({ title: z.string().min(1), body: z.string().min(1), label: z.string().min(1) }),
+  }),
+});
+
+const services = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/services" }),
+  schema: z.object({
+    number: z.string().regex(/^\d{2}$/, "must be a two-digit display order"),
+    title: z.string().min(1),
+    tagline: z.string().min(1),
+    description: z.string().min(1),
+    approach: z.string().min(1),
+    includes: z.array(z.string().min(1)).min(1),
+  }),
+});
+
+const process = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/process" }),
+  schema: z.object({
+    number: z.string().regex(/^\d{2}$/, "must be a two-digit display order"),
+    title: z.string().min(1),
+    summary: z.string().min(1),
+    description: z.string().min(1),
+    whatHappens: z.array(z.string().min(1)).min(1),
+    clientExperience: z.string().min(1),
+  }),
+});
+
+export const collections = { articles, authors, projects, notes, shorts, videos, site, services, process };
